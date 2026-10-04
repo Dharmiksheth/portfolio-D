@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/style.css?v=3">
 
   <!-- Set theme before paint to avoid a flash -->
   <script>
@@ -56,7 +56,17 @@
 
   <header class="site-header">
     <div class="container nav">
-      <a class="brand" href="#top" aria-label="Dharmik Sheth, home">Dharmik Sheth</a>
+      <a class="brand" href="#top" aria-label="Dharmik Sheth, home">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <rect class="bm-bg" width="40" height="40"/>
+          <text class="bm-txt" x="19" y="27.5" text-anchor="middle">DS</text>
+          <rect class="bm-dot" x="32" y="32" width="5" height="5"/>
+        </svg>
+        <span class="brand-text">
+          <span class="brand-name">Dharmik Sheth</span>
+          <span class="brand-role">Technical SEO</span>
+        </span>
+      </a>
       <nav aria-label="Primary">
         <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
           <span></span><span></span>
@@ -269,6 +279,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=2" defer></script>
+  <script src="js/main.js?v=3" defer></script>
 </body>
 </html>
