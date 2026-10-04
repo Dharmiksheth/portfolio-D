@@ -166,7 +166,7 @@ ul { padding: 0; }
 .bend-svg path.arc { stroke: var(--muted); stroke-width: 1.5; }
 .bend-svg text { fill: var(--muted); font: 600 12px var(--font); }
 
-.card-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .card {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
   padding: 28px; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s, border-color .2s;
