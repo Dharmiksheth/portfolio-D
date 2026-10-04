@@ -75,8 +75,16 @@ ul, ol { padding: 0; }
 }
 .site-header.scrolled { border-bottom-color: var(--rule); }
 .nav { display: flex; align-items: center; gap: 24px; height: 68px; }
-.brand { font-family: var(--serif); font-size: 1.35rem; text-decoration: none; margin-right: auto; letter-spacing: -0.01em; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; }
 .brand:hover { color: var(--ink); }
+.brand-mark { width: 38px; height: 38px; flex: none; display: block; }
+.bm-bg { fill: var(--ink); }
+.bm-txt { fill: var(--bg); font: 500 19px var(--serif); letter-spacing: -0.5px; }
+.bm-dot { fill: var(--accent); }
+.brand:hover .bm-dot { fill: var(--bg); }
+.brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+.brand-name { font-family: var(--serif); font-size: 1.25rem; letter-spacing: -0.01em; }
+.brand-role { font-family: var(--mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-top: 3px; }
 .nav-menu { display: flex; gap: 28px; list-style: none; margin: 0; align-items: center; }
 .nav-menu a { font-size: .92rem; text-decoration: none; color: var(--muted); }
 .nav-menu a:hover { color: var(--ink); }
