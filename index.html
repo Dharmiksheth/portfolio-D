@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=4">
+  <link rel="stylesheet" href="css/style.css?v=6">
 
   <!-- Set theme before paint to avoid a flash -->
   <script>
@@ -41,6 +41,7 @@
     "@type": "Person",
     "name": "Dharmik Sheth",
     "jobTitle": "Technical SEO & AI Automation Specialist",
+    "image": "https://dharmiksheth.vercel.app/assets/img/dharmik-sheth.jpg",
     "url": "https://dharmiksheth.vercel.app/",
     "email": "mailto:shethdharmik3@gmail.com",
     "telephone": "+91-77790-55445",
@@ -99,6 +100,7 @@
             <div class="hero-actions">
               <a class="btn btn-solid" href="#work">Selected work</a>
               <a class="btn btn-line" href="#contact">Get in touch</a>
+              <a class="btn btn-line" href="assets/Dharmik_Sheth_Resume.pdf" download>Download resume <span aria-hidden="true">↓</span></a>
             </div>
           </div>
           <dl class="fact-sheet" aria-label="At a glance">
@@ -123,7 +125,13 @@
       <div class="container">
         <header class="section-head"><span class="num">01</span><h2>About</h2></header>
         <div class="split">
-          <p class="pull reveal">An SEO specialist who writes code, so the audits get faster and the strategy gets more attention.</p>
+          <div class="about-side reveal">
+            <picture class="portrait">
+              <source srcset="assets/img/dharmik-sheth.webp" type="image/webp">
+              <img src="assets/img/dharmik-sheth.jpg" width="640" height="800" alt="Dharmik Sheth, Technical SEO and AI Automation Specialist" loading="lazy" decoding="async">
+            </picture>
+            <p class="pull">An SEO specialist who writes code, so the audits get faster and the strategy gets more attention.</p>
+          </div>
           <div class="prose reveal">
             <p>I'm an in-house technical SEO and digital marketing specialist with 18+ months growing organic visibility for two sister engineering-outsourcing firms in mechanical design and BIM/CAD. I own technical SEO, content and link acquisition end to end: audits, keyword and competitor research, guest-post outreach, and reporting in Google Analytics 4 and Search Console.</p>
             <p>Much of the job was repetitive, so I automated it. A suite of Python tools (scrapers, auditors and AI content generators) took on-page analysis from <strong>1–2 days down to a single day per site</strong>, roughly halving audit turnaround.</p>
@@ -268,6 +276,7 @@
         <ul class="contact-list">
           <li><span class="label">Email</span><a href="mailto:shethdharmik3@gmail.com">shethdharmik3@gmail.com</a></li>
           <li><span class="label">Phone</span><a href="tel:+917779055445">+91 77790 55445</a></li>
+          <li><span class="label">Resume</span><a href="assets/Dharmik_Sheth_Resume.pdf" download>Download PDF <span aria-hidden="true">↓</span></a></li>
           <li><span class="label">LinkedIn</span><a href="https://www.linkedin.com/in/dharmik-sheth" target="_blank" rel="noopener">in/dharmik-sheth <span aria-hidden="true">↗</span></a></li>
         </ul>
       </div>
@@ -281,6 +290,6 @@
     </div>
   </footer>
 
-  <script src="js/main.js?v=4" defer></script>
+  <script src="js/main.js?v=6" defer></script>
 </body>
 </html>
