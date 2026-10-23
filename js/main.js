@@ -49,5 +49,13 @@
     items.forEach(function (el) { el.classList.add('visible'); });
   }
 
+  // Only one showcase video plays at a time
+  var videos = document.querySelectorAll('.video-card video');
+  videos.forEach(function (v) {
+    v.addEventListener('play', function () {
+      videos.forEach(function (o) { if (o !== v) o.pause(); });
+    });
+  });
+
   document.getElementById('year').textContent = new Date().getFullYear();
 })();
