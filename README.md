@@ -32,7 +32,7 @@ Then submit `sitemap.xml` in Google Search Console.
 
 ```
 index.html        page content
-css/style.css     styles (colors are tokens at the top; light and dark themes)
-js/main.js        theme toggle, mobile menu, scroll animations
+css/site.css      styles (colour tokens at the top)
+js/site.js        menu, scroll animations, video reel, cursor
 assets/           favicon and social share image
 ```
