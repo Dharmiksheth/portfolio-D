@@ -84,32 +84,6 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // Statement: split into words that light up as the paragraph scrolls past
-  var statement = document.querySelector('[data-words]');
-  var words = [];
-  if (statement && !reduce) {
-    var text = statement.textContent.trim().split(/\s+/);
-    statement.textContent = '';
-    text.forEach(function (w, i) {
-      var s = document.createElement('span');
-      s.className = 'w';
-      s.textContent = w;
-      statement.appendChild(s);
-      if (i < text.length - 1) statement.appendChild(document.createTextNode(' '));
-      words.push(s);
-    });
-    var lightWords = function () {
-      var r = statement.getBoundingClientRect();
-      var vh = window.innerHeight;
-      var p = (vh * 0.85 - r.top) / (r.height + vh * 0.35);
-      var n = Math.round(Math.max(0, Math.min(1, p)) * words.length);
-      words.forEach(function (w, i) { w.classList.toggle('lit', i < n); });
-    };
-    window.addEventListener('scroll', lightWords, { passive: true });
-    window.addEventListener('resize', lightWords);
-    lightWords();
-  }
-
   // Section titles: letters fill in as the title scrolls through the screen
   var fills = [];
   document.querySelectorAll('[data-fill]').forEach(function (t) {
@@ -167,65 +141,44 @@
     targets.forEach(function (el) { el.classList.add('in', 'drawn'); });
   }
 
-  // Video reel: plays muted while on screen, sound toggle per video
-  var vids = document.querySelectorAll('.reel-item video');
-  if ('IntersectionObserver' in window) {
-    var vio = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        var v = entry.target;
-        if (entry.isIntersecting && !reduce) {
-          if (v.preload === 'none') { v.preload = 'auto'; v.load(); }
-          var p = v.play(); if (p && p.catch) p.catch(function () {});
-        } else {
-          v.pause();
-        }
-      });
-    }, { threshold: 0.5 });
-    vids.forEach(function (v) { vio.observe(v); });
+  // Showcase videos: silent preview on hover, click plays with sound (one at a time)
+  var frames = document.querySelectorAll('.vframe');
+  function stopAll(except) {
+    frames.forEach(function (f) {
+      if (f === except) return;
+      var v = f.querySelector('video');
+      v.pause(); v.muted = true;
+      f.classList.remove('playing', 'previewing');
+    });
   }
-  document.querySelectorAll('.reel-item .sound').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var v = btn.parentElement.querySelector('video');
-      var turnOn = v.muted;
-      vids.forEach(function (o) {
-        o.muted = true;
-        o.parentElement.classList.remove('playing-sound');
-        var b = o.parentElement.querySelector('.sound');
-        b.classList.remove('on'); b.textContent = 'Sound off'; b.setAttribute('aria-label', 'Play with sound');
+  frames.forEach(function (f) {
+    var v = f.querySelector('video');
+    var btn = f.querySelector('.vplay');
+    function safePlay() { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+    if (window.matchMedia('(hover: hover)').matches && !reduce) {
+      f.addEventListener('mouseenter', function () {
+        if (f.classList.contains('playing')) return;
+        stopAll(f); v.muted = true; f.classList.add('previewing'); safePlay();
       });
-      if (turnOn) {
-        v.muted = false; v.currentTime = 0;
-        btn.parentElement.classList.add('playing-sound');
-        var p = v.play(); if (p && p.catch) p.catch(function () {});
-        btn.classList.add('on'); btn.textContent = 'Sound on'; btn.setAttribute('aria-label', 'Mute');
+      f.addEventListener('mouseleave', function () {
+        if (f.classList.contains('playing')) return;
+        f.classList.remove('previewing'); v.pause(); v.currentTime = 0;
+      });
+    }
+    f.addEventListener('click', function () {
+      if (f.classList.contains('playing')) {
+        v.pause(); f.classList.remove('playing'); btn.firstElementChild.textContent = '▶';
+        btn.setAttribute('aria-label', btn.getAttribute('aria-label').replace('Pause', 'Play'));
+        return;
       }
+      stopAll(f);
+      f.classList.remove('previewing'); f.classList.add('playing');
+      v.muted = false; v.currentTime = 0; safePlay();
+      btn.firstElementChild.textContent = '❚❚';
+      btn.setAttribute('aria-label', btn.getAttribute('aria-label').replace('Play', 'Pause'));
     });
+    v.addEventListener('ended', function () { f.classList.remove('playing'); });
   });
-
-  // Reel: arrow buttons and drag-to-scroll with a mouse
-  var reel = document.querySelector('.reel');
-  if (reel) {
-    document.querySelectorAll('.reel-nav button').forEach(function (b) {
-      b.addEventListener('click', function () {
-        var item = reel.querySelector('.reel-item');
-        var step = item ? item.getBoundingClientRect().width + 24 : 300;
-        reel.scrollBy({ left: step * parseInt(b.getAttribute('data-dir'), 10), behavior: reduce ? 'auto' : 'smooth' });
-      });
-    });
-    var down = false, sx = 0, sl = 0, moved = false;
-    reel.addEventListener('pointerdown', function (e) {
-      if (e.pointerType !== 'mouse' || e.target.closest('button')) return;
-      down = true; moved = false; sx = e.clientX; sl = reel.scrollLeft;
-    });
-    window.addEventListener('pointermove', function (e) {
-      if (!down) return;
-      var dx = e.clientX - sx;
-      if (Math.abs(dx) > 4) { moved = true; reel.classList.add('dragging'); }
-      reel.scrollLeft = sl - dx;
-    });
-    window.addEventListener('pointerup', function () { down = false; reel.classList.remove('dragging'); });
-    reel.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
-  }
 
   // Fine-pointer extras: cursor dot and magnetic contact button
   if (window.matchMedia('(pointer: fine)').matches && !reduce) {
