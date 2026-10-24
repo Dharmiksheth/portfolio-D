@@ -18,22 +18,14 @@
   <meta property="og:image" content="https://dharmiksheth.vercel.app/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
 
-  <meta name="theme-color" content="#0d1014" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#f3f3ef">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=8">
-
-  <!-- Set theme before paint to avoid a flash -->
-  <script>
-    try {
-      var t = localStorage.getItem('theme');
-      if (t) document.documentElement.setAttribute('data-theme', t);
-    } catch (e) {}
-  </script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="preload" as="image" href="assets/img/dharmik-cutout.webp">
+  <link rel="stylesheet" href="css/site.css">
 
   <script type="application/ld+json">
   {
@@ -55,200 +47,238 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="cursor" aria-hidden="true"></div>
 
   <header class="site-header">
-    <div class="container nav">
+    <div class="wrap nav">
       <a class="brand" href="#top" aria-label="Dharmik Sheth, home">
         <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
-          <rect class="bm-bg" width="48" height="48" rx="10"/>
-          <circle class="bm-d" cx="20" cy="27" r="9"/>
-          <path class="bm-d" d="M29 9v18"/>
-          <path class="bm-handle" d="M27 34l7 7"/>
+          <rect width="48" height="48" rx="10" fill="#0e0e0e"/>
+          <circle cx="20" cy="27" r="9" fill="none" stroke="#fff" stroke-width="4.5"/>
+          <path d="M29 9v18" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/>
+          <path class="bm-handle" d="M27 34l7 7" stroke="#2f5bff" stroke-width="4.5" stroke-linecap="round"/>
         </svg>
-        <span class="brand-text">
-          <span class="brand-name">Dharmik Sheth</span>
-          <span class="brand-role">Technical SEO</span>
-        </span>
+        <span>Dharmik Sheth</span>
       </a>
       <nav aria-label="Primary">
-        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
-          <span></span><span></span>
-        </button>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu"><span></span><span></span></button>
         <ul id="nav-menu" class="nav-menu">
-          <li><a href="#about"><span class="num">01</span>About</a></li>
-          <li><a href="#work"><span class="num">02</span>Work</a></li>
-          <li><a href="#experience"><span class="num">03</span>Experience</a></li>
-          <li><a href="#skills"><span class="num">04</span>Skills</a></li>
-          <li><a href="#contact"><span class="num">05</span>Contact</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#videos">Videos</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a class="nav-cta" href="#contact">Let's talk</a></li>
         </ul>
       </nav>
-      <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z"/></svg>
-      </button>
     </div>
   </header>
 
   <main id="main">
     <!-- HERO -->
     <section class="hero" id="top">
-      <div class="container">
-        <div class="hero-grid">
-          <div>
-            <p class="kicker">Technical SEO &amp; AI Automation — Ahmedabad, India</p>
-            <h1>Search visibility, built on sound <em>engineering</em>.</h1>
-            <p class="lead">I run technical SEO, content and link building in-house for two engineering firms, and write the Python tools that take the repetitive work out of it.</p>
-            <div class="hero-actions">
-              <a class="btn btn-solid" href="#work">Selected work</a>
-              <a class="btn btn-line" href="#contact">Get in touch</a>
-              <a class="btn btn-line" href="assets/Dharmik_Sheth_Resume.pdf" download>Download resume <span aria-hidden="true">↓</span></a>
-            </div>
-          </div>
-          <dl class="fact-sheet" aria-label="At a glance">
-            <div><dt>Currently</dt><dd>SEO Executive, Tesla Outsourcing Services</dd></div>
-            <div><dt>Focus</dt><dd>Technical SEO, link building, content, AI video, automation</dd></div>
-            <div><dt>Stack</dt><dd>Python, n8n, WordPress, GA4, Search Console, Gemini, Google Flow</dd></div>
-            <div><dt>Status</dt><dd><span class="status-dot" aria-hidden="true"></span>Open to new opportunities</dd></div>
-          </dl>
-        </div>
+      <div class="hero-meta wrap">
+        <span>Technical SEO &amp; AI Automation</span>
+        <span class="hide-sm">Ahmedabad, India</span>
+        <span>Portfolio ’26</span>
+      </div>
 
-        <dl class="figures">
-          <div><dd>~50<span>%</span></dd><dt>Less time per site audit</dt></div>
-          <div><dd>10</dd><dt>Python SEO tools in daily use</dt></div>
-          <div><dd>18<span>+</span></dd><dt>Months in hands-on SEO</dt></div>
-          <div><dd>2</dd><dt>Company websites owned end to end</dt></div>
-        </dl>
+      <h1 class="hero-name" aria-label="Dharmik Sheth">
+        <span class="line line-1" aria-hidden="true"><span>Dharmik</span></span>
+        <span class="line line-2" aria-hidden="true"><span>Sheth</span></span>
+      </h1>
+
+      <div class="hero-photo">
+        <img src="assets/img/dharmik-cutout.webp" width="900" height="1174" alt="Dharmik Sheth in a navy blazer" fetchpriority="high">
+      </div>
+
+      <a class="badge" href="#contact" aria-label="Open to new opportunities, get in touch">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <defs><path id="badge-circle" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs>
+          <text><textPath href="#badge-circle" textLength="286" lengthAdjust="spacingAndGlyphs">OPEN TO NEW OPPORTUNITIES • OPEN TO WORK •</textPath></text>
+        </svg>
+        <span class="badge-dot"></span>
+      </a>
+
+      <div class="hero-foot wrap">
+        <p class="hero-role">SEO specialist who writes code.<br><span>Search, automation &amp; AI video.</span></p>
+        <div class="hero-pitch">
+          <p>I run technical SEO, content and link building in-house for two engineering firms, and build the Python tools and AI videos that do the heavy lifting.</p>
+          <div class="hero-actions">
+            <a class="btn btn-ink" href="#work">See my work <span aria-hidden="true">→</span></a>
+            <a class="btn btn-line" href="assets/Dharmik_Sheth_Resume.pdf" download>Resume <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
       </div>
     </section>
 
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Technical SEO</span><i>✦</i><span>Link Building</span><i>✦</i><span>Python Automation</span><i>✦</i><span>AI Video</span><i>✦</i><span>Content Strategy</span><i>✦</i><span>Guest Posting</span><i>✦</i>
+        <span>Technical SEO</span><i>✦</i><span>Link Building</span><i>✦</i><span>Python Automation</span><i>✦</i><span>AI Video</span><i>✦</i><span>Content Strategy</span><i>✦</i><span>Guest Posting</span><i>✦</i>
+      </div>
+    </div>
+
     <!-- ABOUT -->
-    <section class="section" id="about">
-      <div class="container">
-        <header class="section-head"><span class="num">01</span><h2>About</h2></header>
-        <div class="split">
-          <div class="about-side reveal">
-            <picture class="portrait">
-              <source srcset="assets/img/dharmik-sheth.webp" type="image/webp">
-              <img src="assets/img/dharmik-sheth.jpg" width="640" height="800" alt="Dharmik Sheth, Technical SEO and AI Automation Specialist" loading="lazy" decoding="async">
-            </picture>
-            <p class="pull">An SEO specialist who writes code, so the audits get faster and the strategy gets more attention.</p>
+    <section class="section about" id="about">
+      <div class="wrap">
+        <p class="eyebrow"><span>01</span> About</p>
+        <p class="statement" data-words>I'm an in-house technical SEO and digital marketing specialist with 18+ months growing organic visibility for two sister engineering-outsourcing firms in mechanical design and BIM/CAD. Much of the job was repetitive, so I automated it.</p>
+
+        <div class="about-grid">
+          <div class="about-copy reveal">
+            <p>I own technical SEO, content and link acquisition end to end: audits, keyword and competitor research, guest-post outreach, and reporting in Google Analytics 4 and Search Console.</p>
+            <p>A suite of Python tools (scrapers, auditors and AI content generators) took on-page analysis from <strong>1–2 days down to a single day per site</strong>. Today I work where SEO and AI meet: n8n workflows, AI-assisted research and content, AI marketing video, and small web tools that solve real problems.</p>
           </div>
-          <div class="prose reveal">
-            <p>I'm an in-house technical SEO and digital marketing specialist with 18+ months growing organic visibility for two sister engineering-outsourcing firms in mechanical design and BIM/CAD. I own technical SEO, content and link acquisition end to end: audits, keyword and competitor research, guest-post outreach, and reporting in Google Analytics 4 and Search Console.</p>
-            <p>Much of the job was repetitive, so I automated it. A suite of Python tools (scrapers, auditors and AI content generators) took on-page analysis from <strong>1–2 days down to a single day per site</strong>, roughly halving audit turnaround.</p>
-            <p>Today I work where SEO and AI meet: n8n workflows, AI-assisted research and content, and small web tools that solve real problems.</p>
-          </div>
+          <dl class="stats">
+            <div class="reveal"><dt>Less time per site audit</dt><dd><span class="count" data-to="50">50</span>%</dd></div>
+            <div class="reveal"><dt>Python SEO tools in daily use</dt><dd><span class="count" data-to="10">10</span></dd></div>
+            <div class="reveal"><dt>Months in hands-on SEO</dt><dd><span class="count" data-to="18">18</span>+</dd></div>
+            <div class="reveal"><dt>Company websites owned end to end</dt><dd><span class="count" data-to="2">2</span></dd></div>
+          </dl>
         </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section services" id="services">
+      <div class="wrap">
+        <p class="eyebrow"><span>02</span> What I do</p>
+        <ol class="service-list">
+          <li class="reveal">
+            <span class="s-num">01</span>
+            <h3>Technical SEO</h3>
+            <p>Audits, crawlability, indexation, metadata and site structure, fixed and tracked in GA4 and Search Console.</p>
+            <span class="s-arrow" aria-hidden="true">↗</span>
+          </li>
+          <li class="reveal">
+            <span class="s-num">02</span>
+            <h3>Link building &amp; outreach</h3>
+            <p>Prospecting industry sites, editor outreach and negotiation, and guest posts that build authority and referral traffic.</p>
+            <span class="s-arrow" aria-hidden="true">↗</span>
+          </li>
+          <li class="reveal">
+            <span class="s-num">03</span>
+            <h3>Content that ranks</h3>
+            <p>Case studies, guides, checklists, blogs and landing pages on mechanical design, FEA/CFD, sheet metal and reverse engineering.</p>
+            <span class="s-arrow" aria-hidden="true">↗</span>
+          </li>
+          <li class="reveal">
+            <span class="s-num">04</span>
+            <h3>Automation &amp; AI video</h3>
+            <p>Python SEO tools, n8n workflows, and short-form marketing videos made with Gemini, Google Flow and Google Vids.</p>
+            <span class="s-arrow" aria-hidden="true">↗</span>
+          </li>
+        </ol>
       </div>
     </section>
 
     <!-- WORK -->
-    <section class="section" id="work">
-      <div class="container">
-        <header class="section-head"><span class="num">02</span><h2>Selected work</h2></header>
+    <section class="section work" id="work">
+      <div class="wrap">
+        <p class="eyebrow"><span>03</span> Selected work</p>
 
         <article class="feature reveal">
           <div class="feature-text">
-            <p class="meta">Live · Web development · Vercel</p>
+            <p class="tag"><span class="live-dot"></span> Live project</p>
             <h3>Sheet Metal Design &amp; Bend Calculator</h3>
             <p>A sheet metal design website I built and deployed on Vercel. Its interactive <strong>Bend Calculator</strong> lets engineers and fabricators work out bend calculations right in the browser.</p>
             <div class="link-row">
-              <a class="text-link" href="https://sheet-metal-design-alpha.vercel.app/" target="_blank" rel="noopener">Visit website <span aria-hidden="true">↗</span></a>
-              <a class="text-link" href="https://sheet-metal-design-alpha.vercel.app/tools/bend-calculator" target="_blank" rel="noopener">Try the Bend Calculator <span aria-hidden="true">↗</span></a>
+              <a class="btn btn-ink" href="https://sheet-metal-design-alpha.vercel.app/" target="_blank" rel="noopener">Visit website <span aria-hidden="true">↗</span></a>
+              <a class="btn btn-line" href="https://sheet-metal-design-alpha.vercel.app/tools/bend-calculator" target="_blank" rel="noopener">Try the calculator <span aria-hidden="true">↗</span></a>
             </div>
           </div>
           <figure class="drawing" aria-hidden="true">
             <svg viewBox="0 0 320 220">
               <g class="grid"><path d="M0 40H320M0 80H320M0 120H320M0 160H320M0 200H320M40 0V220M80 0V220M120 0V220M160 0V220M200 0V220M240 0V220M280 0V220"/></g>
-              <path class="part" d="M30 160 H150 Q172 160 182 141 L240 40" />
-              <path class="center" d="M150 160 L150 70" />
-              <path class="dim" d="M30 186 H150 M30 180 V192 M150 180 V192" />
-              <path class="dim" d="M262 52 L204 152 M256 49 L268 56 M198 149 L210 156" />
-              <path class="dim" d="M150 110 A50 50 0 0 1 176 117" />
-              <text x="82" y="204">L₁</text><text x="244" y="112">L₂</text><text x="160" y="103">θ</text>
+              <path class="part draw" pathLength="1" d="M30 160 H150 Q172 160 182 141 L240 40" />
+              <path class="center draw" pathLength="1" d="M150 160 L150 70" />
+              <path class="dim draw" pathLength="1" d="M30 186 H150 M30 180 V192 M150 180 V192" />
+              <path class="dim draw" pathLength="1" d="M262 52 L204 152 M256 49 L268 56 M198 149 L210 156" />
+              <path class="dim draw" pathLength="1" d="M150 110 A50 50 0 0 1 176 117" />
+              <text x="82" y="206">L₁</text><text x="244" y="112">L₂</text><text x="160" y="103">θ</text>
               <text class="title" x="30" y="24">BEND · DETAIL A</text>
             </svg>
           </figure>
         </article>
 
-        <ol class="work-list">
-          <li class="reveal">
-            <span class="idx">A</span>
-            <div class="work-main">
-              <h3>SEO Automation Toolkit</h3>
-              <p>Ten Python tools for metadata analysis, image extraction, internal link auditing and AI-assisted content generation: meta tag scraper and optimizer, image URL extractor, alt tag checker, internal link analyzer, and AI generators for titles, meta descriptions, blogs and articles. Used daily in live SEO delivery, cutting audit turnaround roughly in half.</p>
-            </div>
-            <p class="work-tags">Python / Web scraping / LLM APIs</p>
-          </li>
-          <li class="reveal">
-            <span class="idx">B</span>
-            <div class="work-main">
-              <h3>n8n Content Workflow</h3>
-              <p>An automated pipeline that connects content generation, review and blog publishing, with no manual handoffs between steps.</p>
-            </div>
-            <p class="work-tags">n8n / AI APIs / WordPress</p>
-          </li>
-          <li class="reveal">
-            <span class="idx">C</span>
-            <div class="work-main">
-              <h3>AI Chatbot</h3>
-              <p>A chatbot built on API integration with a knowledge-base architecture, deployed to improve website engagement and answer internal research questions.</p>
-            </div>
-            <p class="work-tags">API integration / Knowledge base / Prompting</p>
-          </li>
-          <li class="reveal">
-            <span class="idx">D</span>
-            <div class="work-main">
-              <h3>Content Asset Library</h3>
-              <p>Case studies, guides, checklists and downloadable resources on mechanical design, FEA/CFD, sheet metal and reverse engineering, created to drive organic acquisition and support guest-post placement.</p>
-            </div>
-            <p class="work-tags">Content strategy / Technical writing / Link building</p>
-          </li>
-        </ol>
+        <div class="work-grid">
+          <article class="work-card reveal">
+            <span class="w-num">A</span>
+            <h3>SEO Automation Toolkit</h3>
+            <p>Ten Python tools for metadata analysis, image extraction, internal link auditing and AI-assisted content generation: meta tag scraper and optimizer, image URL extractor, alt tag checker, internal link analyzer, and AI generators for titles, meta descriptions, blogs and articles. Used daily, cutting audit turnaround roughly in half.</p>
+            <p class="w-tags">Python · Web scraping · LLM APIs</p>
+          </article>
+          <article class="work-card reveal">
+            <span class="w-num">B</span>
+            <h3>n8n Content Workflow</h3>
+            <p>An automated pipeline that connects content generation, review and blog publishing, with no manual handoffs between steps.</p>
+            <p class="w-tags">n8n · AI APIs · WordPress</p>
+          </article>
+          <article class="work-card reveal">
+            <span class="w-num">C</span>
+            <h3>AI Chatbot</h3>
+            <p>A chatbot built on API integration with a knowledge-base architecture, deployed to improve website engagement and answer internal research questions.</p>
+            <p class="w-tags">API integration · Knowledge base · Prompting</p>
+          </article>
+          <article class="work-card reveal">
+            <span class="w-num">D</span>
+            <h3>Content Asset Library</h3>
+            <p>Case studies, guides, checklists and downloadable resources on mechanical design, FEA/CFD, sheet metal and reverse engineering, created to drive organic acquisition and support guest-post placement.</p>
+            <p class="w-tags">Content strategy · Technical writing · Link building</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-        <div class="video-block">
-          <div class="video-intro reveal">
-            <p class="meta">AI video production</p>
-            <h3>Short-form video, made with AI and edited by hand</h3>
-            <p>I script, generate and edit short-form marketing videos with Gemini, Google Flow and Google Vids: from concept and scene prompts to AI presenters, the final cut, subtitles and end cards. A recent series for a Google review stand product is below.</p>
-            <p class="work-tags">Gemini / Google Flow / Google Vids / Video editing</p>
-          </div>
-          <div class="video-grid">
-            <figure class="video-card reveal">
-              <video controls playsinline preload="none" poster="assets/video/review-stand-explainer.jpg" width="608" height="1080">
-                <source src="assets/video/review-stand-explainer.mp4" type="video/mp4">
-              </video>
-              <figcaption><strong>Review stand explainer</strong><span>10s · AI presenter, product demo</span></figcaption>
-            </figure>
-            <figure class="video-card reveal">
-              <video controls playsinline preload="none" poster="assets/video/multi-industry-ad.jpg" width="608" height="1080">
-                <source src="assets/video/multi-industry-ad.mp4" type="video/mp4">
-              </video>
-              <figcaption><strong>Multi-industry ad</strong><span>19s · restaurant, salon and clinic, with subtitles</span></figcaption>
-            </figure>
-            <figure class="video-card reveal">
-              <video controls playsinline preload="none" poster="assets/video/cafe-owner-testimonial.jpg" width="608" height="1080">
-                <source src="assets/video/cafe-owner-testimonial.mp4" type="video/mp4">
-              </video>
-              <figcaption><strong>Café owner testimonial</strong><span>16s · talking-head story with end card</span></figcaption>
-            </figure>
-            <figure class="video-card reveal">
-              <video controls playsinline preload="none" poster="assets/video/bakery-customer-story.jpg" width="608" height="1080">
-                <source src="assets/video/bakery-customer-story.mp4" type="video/mp4">
-              </video>
-              <figcaption><strong>Bakery customer story</strong><span>19s · cinematic product-in-use scene</span></figcaption>
-            </figure>
-          </div>
+    <!-- VIDEOS -->
+    <section class="section videos" id="videos">
+      <div class="wrap">
+        <p class="eyebrow eyebrow-light"><span>04</span> AI video production</p>
+        <div class="videos-head">
+          <h2 class="big-title">Made with AI.<br><em>Edited by hand.</em></h2>
+          <p>I script, generate and edit short-form marketing videos with Gemini, Google Flow and Google Vids: from concept and scene prompts to AI presenters, the final cut, subtitles and end cards. A recent series for a Google review stand product:</p>
+        </div>
+      </div>
+      <div class="reel" tabindex="0" aria-label="Video reel, scroll sideways">
+        <figure class="reel-item">
+          <video muted loop playsinline preload="none" poster="assets/video/review-stand-explainer.jpg" width="608" height="1080"><source src="assets/video/review-stand-explainer.mp4" type="video/mp4"></video>
+          <button class="sound" type="button" aria-label="Play with sound">Sound off</button>
+          <figcaption><strong>Review stand explainer</strong><span>10s · AI presenter, product demo</span></figcaption>
+        </figure>
+        <figure class="reel-item">
+          <video muted loop playsinline preload="none" poster="assets/video/multi-industry-ad.jpg" width="608" height="1080"><source src="assets/video/multi-industry-ad.mp4" type="video/mp4"></video>
+          <button class="sound" type="button" aria-label="Play with sound">Sound off</button>
+          <figcaption><strong>Multi-industry ad</strong><span>19s · restaurant, salon and clinic</span></figcaption>
+        </figure>
+        <figure class="reel-item">
+          <video muted loop playsinline preload="none" poster="assets/video/cafe-owner-testimonial.jpg" width="608" height="1080"><source src="assets/video/cafe-owner-testimonial.mp4" type="video/mp4"></video>
+          <button class="sound" type="button" aria-label="Play with sound">Sound off</button>
+          <figcaption><strong>Café owner testimonial</strong><span>16s · talking-head story</span></figcaption>
+        </figure>
+        <figure class="reel-item">
+          <video muted loop playsinline preload="none" poster="assets/video/bakery-customer-story.jpg" width="608" height="1080"><source src="assets/video/bakery-customer-story.mp4" type="video/mp4"></video>
+          <button class="sound" type="button" aria-label="Play with sound">Sound off</button>
+          <figcaption><strong>Bakery customer story</strong><span>19s · product-in-use scene</span></figcaption>
+        </figure>
+      </div>
+      <div class="wrap reel-foot">
+        <p class="w-tags">Gemini · Google Flow · Google Vids · Video editing</p>
+        <div class="reel-nav">
+          <button type="button" data-dir="-1" aria-label="Previous video">←</button>
+          <button type="button" data-dir="1" aria-label="Next video">→</button>
         </div>
       </div>
     </section>
 
     <!-- EXPERIENCE -->
-    <section class="section" id="experience">
-      <div class="container">
-        <header class="section-head"><span class="num">03</span><h2>Experience</h2></header>
+    <section class="section experience" id="experience">
+      <div class="wrap">
+        <p class="eyebrow"><span>05</span> Experience</p>
         <ol class="timeline">
           <li class="reveal">
-            <div class="tl-meta"><span class="tl-date">Mar 2025 — Present</span><span class="tl-place">Ahmedabad, India</span></div>
+            <div class="tl-meta"><span class="tl-date">Mar 2025 — Present</span><span>Ahmedabad, India</span></div>
             <div class="tl-body">
               <h3>SEO Executive (In-House)</h3>
               <p class="org">Tesla Outsourcing Services</p>
@@ -264,7 +294,7 @@
             </div>
           </li>
           <li class="reveal">
-            <div class="tl-meta"><span class="tl-date">Aug 2024 — Mar 2025</span><span class="tl-place">Ahmedabad, India</span></div>
+            <div class="tl-meta"><span class="tl-date">Aug 2024 — Mar 2025</span><span>Ahmedabad, India</span></div>
             <div class="tl-body">
               <h3>Research Assistant &amp; Digital Marketing Intern</h3>
               <p class="org">Medvac Infotech</p>
@@ -277,7 +307,7 @@
             </div>
           </li>
           <li class="reveal">
-            <div class="tl-meta"><span class="tl-date">2021 — 2024</span><span class="tl-place">Wadhwan, Gujarat</span></div>
+            <div class="tl-meta"><span class="tl-date">2021 — 2024</span><span>Wadhwan, Gujarat</span></div>
             <div class="tl-body">
               <h3>Bachelor of Computer Applications</h3>
               <p class="org">Saurashtra University</p>
@@ -285,46 +315,40 @@
             </div>
           </li>
         </ol>
-      </div>
-    </section>
 
-    <!-- SKILLS -->
-    <section class="section" id="skills">
-      <div class="container">
-        <header class="section-head"><span class="num">04</span><h2>Skills</h2></header>
-        <dl class="skills">
-          <div class="reveal"><dt>SEO</dt><dd>Technical SEO, On-Page, Off-Page, Keyword Research, Competitor Analysis, SEO Audits, Link Building, Guest Posting &amp; Outreach, Content Strategy, Local SEO</dd></div>
-          <div class="reveal"><dt>Programming</dt><dd>Python, Automation Scripting, Web Scraping, API Integration, HTML / CSS / JS</dd></div>
-          <div class="reveal"><dt>AI &amp; Automation</dt><dd>Prompt Engineering, AI Workflow Automation, n8n, ChatGPT, Claude, Gemini, Google Flow, AI Content &amp; Video Generation</dd></div>
-          <div class="reveal"><dt>CMS &amp; Analytics</dt><dd>WordPress, Google Analytics 4, Google Search Console</dd></div>
-          <div class="reveal"><dt>Content &amp; Design</dt><dd>Blog &amp; Article Writing, SEO Copywriting, Landing Pages, Case Studies, Technical Writing, Canva, Video Editing, Google Vids</dd></div>
-          <div class="reveal"><dt>Languages</dt><dd>English (professional), Hindi (fluent), Gujarati (native)</dd></div>
-        </dl>
+        <div class="skills">
+          <div class="reveal"><h4>SEO</h4><p>Technical SEO, On-Page, Off-Page, Keyword Research, Competitor Analysis, SEO Audits, Link Building, Guest Posting &amp; Outreach, Content Strategy, Local SEO</p></div>
+          <div class="reveal"><h4>Programming</h4><p>Python, Automation Scripting, Web Scraping, API Integration, HTML / CSS / JS</p></div>
+          <div class="reveal"><h4>AI &amp; Automation</h4><p>Prompt Engineering, AI Workflow Automation, n8n, ChatGPT, Claude, Gemini, Google Flow, AI Content &amp; Video Generation</p></div>
+          <div class="reveal"><h4>CMS &amp; Analytics</h4><p>WordPress, Google Analytics 4, Google Search Console</p></div>
+          <div class="reveal"><h4>Content &amp; Design</h4><p>Blog &amp; Article Writing, SEO Copywriting, Landing Pages, Case Studies, Technical Writing, Canva, Video Editing, Google Vids</p></div>
+          <div class="reveal"><h4>Languages</h4><p>English (professional), Hindi (fluent), Gujarati (native)</p></div>
+        </div>
       </div>
     </section>
 
     <!-- CONTACT -->
-    <section class="section contact" id="contact">
-      <div class="container">
-        <header class="section-head"><span class="num">05</span><h2>Contact</h2></header>
-        <p class="contact-title">Need technical SEO, link building, content or a custom automation? <em>Let's talk.</em></p>
-        <ul class="contact-list">
-          <li><span class="label">Email</span><a href="mailto:shethdharmik3@gmail.com">shethdharmik3@gmail.com</a></li>
-          <li><span class="label">Phone</span><a href="tel:+917779055445">+91 77790 55445</a></li>
-          <li><span class="label">Resume</span><a href="assets/Dharmik_Sheth_Resume.pdf" download>Download PDF <span aria-hidden="true">↓</span></a></li>
-          <li><span class="label">LinkedIn</span><a href="https://www.linkedin.com/in/dharmik-sheth" target="_blank" rel="noopener">in/dharmik-sheth <span aria-hidden="true">↗</span></a></li>
-        </ul>
+    <section class="contact" id="contact">
+      <div class="wrap">
+        <p class="eyebrow eyebrow-light"><span>06</span> Contact</p>
+        <h2 class="contact-title"><span class="line"><span>Let's make your</span></span><span class="line"><span>site <em>rank.</em></span></span></h2>
+        <div class="contact-row">
+          <a class="magnet" href="mailto:shethdharmik3@gmail.com"><span>Email me</span></a>
+          <ul class="contact-list">
+            <li><span>Email</span><a href="mailto:shethdharmik3@gmail.com">shethdharmik3@gmail.com</a></li>
+            <li><span>Phone</span><a href="tel:+917779055445">+91 77790 55445</a></li>
+            <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/dharmik-sheth" target="_blank" rel="noopener">in/dharmik-sheth ↗</a></li>
+            <li><span>Resume</span><a href="assets/Dharmik_Sheth_Resume.pdf" download>Download PDF ↓</a></li>
+          </ul>
+        </div>
       </div>
+      <footer class="site-footer wrap">
+        <p>© <span id="year">2026</span> Dharmik Sheth · Ahmedabad, India</p>
+        <a href="#top">Back to top ↑</a>
+      </footer>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© <span id="year">2026</span> Dharmik Sheth · Ahmedabad, India</p>
-      <a href="#top">Back to top ↑</a>
-    </div>
-  </footer>
-
-  <script src="js/main.js?v=8" defer></script>
+  <script src="js/site.js" defer></script>
 </body>
 </html>
