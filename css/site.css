@@ -392,3 +392,54 @@ button { font: inherit; color: inherit; }
   .contact-list li { grid-template-columns: 1fr; gap: 2px; }
   .btn { padding: 13px 20px; }
 }
+
+/* ===== Dark theme (dark throughout, blue accent) ===== */
+:root {
+  --paper: #0b0b0c;
+  --paper-2: #1c1c1f;
+  --ink: #f4f2ee;
+  --ink-2: #e7e4df;
+  --muted: #9d9a95;
+  --muted-dark: #9d9a95;
+  --rule: #26262a;
+  --rule-dark: #26262a;
+  --blue: #3d66ff;
+  --blue-soft: #8aa4ff;
+  --on-light: #0b0b0c;
+  color-scheme: dark;
+}
+.site-header.scrolled, .site-header.dark.scrolled { background: rgba(11, 11, 12, .78); }
+.nav-cta, .site-header.dark .nav-cta { background: var(--blue); color: #fff; }
+.nav-cta:hover, .site-header.dark .nav-cta:hover { background: #fff; color: var(--on-light); }
+.bm-bg, .site-header.dark .bm-bg { fill: var(--blue); }
+.bm-handle, .site-header.dark .bm-handle { stroke: #fff; }
+.btn-ink { background: var(--blue); border-color: var(--blue); color: #fff; }
+.btn-ink:hover { background: #fff; border-color: #fff; color: var(--on-light); }
+.btn-line { border-color: rgba(255, 255, 255, .35); }
+.btn-line:hover { background: #fff; color: var(--on-light); border-color: #fff; }
+.btn-pill { color: var(--on-light); }
+.hero-glow .g1 { background: radial-gradient(closest-side, rgba(61, 102, 255, .72), rgba(61, 102, 255, 0)); }
+.hero-glow .g2 { background: radial-gradient(closest-side, rgba(120, 150, 255, .5), rgba(120, 150, 255, 0)); }
+.hero { background: #08090d; }
+.videos, .contact { background: #121214; }
+.experience { background: var(--paper); }
+.feature, .work-card { background: #141416; border: 1px solid #222226; }
+.w-num { color: #232327; }
+.drawing { background: #0f0f11; }
+.service-list li::before { background: var(--blue); }
+.service-list li:hover p { color: #fff; }
+.service-list li:hover .s-num, .service-list li:hover .s-arrow { color: #fff; }
+.tools-track span { color: #4a4a4f; }
+.tools-label { background: var(--paper); }
+.work-card::after, .feature::after { background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(61, 102, 255, .14), transparent 60%); box-shadow: inset 0 0 0 1.5px rgba(61, 102, 255, .4); }
+.vcard { background: #18181b; border-color: #27272b; }
+.vcard:hover { border-color: rgba(138, 164, 255, .5); }
+.vplay { color: var(--on-light); }
+.magnet:hover { color: var(--on-light); }
+.to-top { background: #1c1c1f; }
+.to-top:hover { background: var(--blue); }
+@media (pointer: fine) { .js .cursor.big { background: rgba(61, 102, 255, .25); } }
+.marquee { background: var(--blue); }
+.sec-title .hl { color: var(--blue); }
+.preloader { background: #08090d; }
+@media (max-width: 720px) { .nav-menu { background: var(--paper); } }
