@@ -105,6 +105,69 @@
     fillTitles();
   }
 
+  // Blur-in paragraphs: split into words that sharpen in sequence
+  document.querySelectorAll('[data-blur]').forEach(function (el) {
+    var i = 0;
+    Array.prototype.slice.call(el.childNodes).forEach(function (node) {
+      if (node.nodeType === 3) {
+        var frag = document.createDocumentFragment();
+        node.textContent.split(/(\s+)/).forEach(function (w) {
+          if (!w) return;
+          if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(w)); return; }
+          var sp = document.createElement('span'); sp.className = 'bw'; sp.textContent = w; sp.style.setProperty('--i', i++);
+          frag.appendChild(sp);
+        });
+        el.replaceChild(frag, node);
+      } else if (node.nodeType === 1) {
+        node.classList.add('bw'); node.style.setProperty('--i', i++);
+      }
+    });
+  });
+
+  // Grow on scroll: the featured project scales up to full size as it enters
+  var growers = document.querySelectorAll('[data-grow]');
+  function grow() {
+    var vh = window.innerHeight;
+    growers.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      var p = Math.max(0, Math.min(1, (vh - r.top) / (vh * 0.75)));
+      el.style.setProperty('--g', (0.86 + 0.14 * p).toFixed(4));
+      el.style.setProperty('--gp', p.toFixed(3));
+    });
+  }
+  if (growers.length && !reduce) {
+    window.addEventListener('scroll', grow, { passive: true });
+    window.addEventListener('resize', grow);
+    grow();
+  }
+
+  // Floating pill: appears after the hero, names the current section, opens a quick menu
+  var pill = document.querySelector('.pill');
+  if (pill) {
+    var pillLabel = pill.querySelector('.pill-label');
+    var pillBtn = pill.querySelector('.pill-menu');
+    var sections = [['top', 'Home'], ['about', 'About'], ['services', 'Services'], ['work', 'Projects'], ['videos', 'Videos'], ['experience', 'Experience'], ['contact', 'Contact']]
+      .map(function (p) { return { el: document.getElementById(p[0]), name: p[1] }; })
+      .filter(function (p) { return p.el; });
+    function setPill(open) {
+      pill.classList.toggle('open', open);
+      pillBtn.setAttribute('aria-expanded', String(open));
+      pillBtn.setAttribute('aria-label', open ? 'Close quick menu' : 'Open quick menu');
+    }
+    pillBtn.addEventListener('click', function () { setPill(!pill.classList.contains('open')); });
+    pill.addEventListener('click', function (e) { if (e.target.closest('.pill-links a')) setPill(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setPill(false); });
+    function pillScroll() {
+      var y = window.scrollY, mid = window.innerHeight * 0.4, name = 'Home';
+      pill.classList.toggle('show', y > window.innerHeight * 0.6);
+      sections.forEach(function (p) { if (p.el.getBoundingClientRect().top <= mid) name = p.name; });
+      if (pillLabel.textContent !== name) pillLabel.textContent = name;
+      if (y < window.innerHeight * 0.6) setPill(false);
+    }
+    window.addEventListener('scroll', pillScroll, { passive: true });
+    pillScroll();
+  }
+
   // Count-up numbers
   function countUp(el) {
     var to = parseInt(el.getAttribute('data-to'), 10);
@@ -121,7 +184,7 @@
   }
 
   // Reveal on scroll, plus one-off triggers (counters, drawing, contact title)
-  var targets = document.querySelectorAll('.reveal, .drawing, .contact-title, .count, .sec-title, .squiggle');
+  var targets = document.querySelectorAll('.reveal, .drawing, .contact-title, .count, .sec-title, .squiggle, .sparkle, [data-blur], .giant-name');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
