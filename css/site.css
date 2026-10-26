@@ -558,3 +558,14 @@ button { font: inherit; color: inherit; }
   .proc-steps p { max-height: none !important; opacity: 1 !important; margin-top: 10px; }
   .proc-steps { min-height: 0 !important; }
 }
+
+/* ===== Wide project card + employer logo ===== */
+.work-card-wide { grid-column: 1 / -1; }
+.work-card-wide h3 { margin-top: clamp(28px, 4vw, 48px); }
+.work-card-wide .tag { position: relative; margin: 0; }
+.feat-list { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 28px; margin: 4px 0 18px; }
+.feat-list li { position: relative; padding-left: 22px; color: var(--muted); font-size: .95rem; }
+.feat-list li::before { content: "→"; position: absolute; left: 0; color: var(--blue); }
+.org-logo { display: flex; align-items: center; gap: 12px; }
+.org-logo img { height: 34px; width: auto; padding: 4px 8px; border-radius: 8px; background: #fff; }
+@media (max-width: 720px) { .feat-list { grid-template-columns: 1fr; } }
