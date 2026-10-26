@@ -17,6 +17,18 @@ python3 -m http.server 8000
 3. Framework preset: **Other**. Leave build command and output directory empty.
 4. Deploy. Every push to the main branch redeploys automatically.
 
+## Chat assistant
+
+The floating chat button (`js/chat.js`, `css/chat.css`) calls the serverless
+function `api/chat.js`, which answers from a knowledge base of this site's content
+using Google Gemini. In Vercel → Project → Settings → Environment Variables, set:
+
+- `GEMINI_API_KEY` — required. Never commit it.
+- `GEMINI_MODEL` — optional, defaults to `gemini-2.0-flash`.
+
+If the API is unavailable the widget shows a fallback message with the email address;
+the rest of the site is unaffected. Visitor messages are not logged or stored.
+
 ## After the first deploy
 
 The site uses `https://dharmiksheth.vercel.app/` as a placeholder URL. Replace it
@@ -34,5 +46,8 @@ Then submit `sitemap.xml` in Google Search Console.
 index.html        page content
 css/site.css      styles (colour tokens at the top)
 js/site.js        menu, scroll animations, video reel, cursor
+css/chat.css      chat assistant styles
+js/chat.js        chat assistant widget
+api/chat.js       Vercel function that answers chat questions (Gemini)
 assets/           favicon and social share image
 ```
