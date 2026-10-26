@@ -24,7 +24,7 @@ function `api/chat.js`, which answers from a knowledge base of this site's conte
 using Google Gemini. In Vercel → Project → Settings → Environment Variables, set:
 
 - `GEMINI_API_KEY` — required. Never commit it.
-- `GEMINI_MODEL` — optional, defaults to `gemini-2.0-flash`.
+- `GEMINI_MODEL` — optional, defaults to `gemini-3.6-flash`.
 
 If the API is unavailable the widget shows a fallback message with the email address;
 the rest of the site is unaffected. Visitor messages are not logged or stored.
