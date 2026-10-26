@@ -2,7 +2,7 @@
 // Answers questions about Dharmik from the knowledge base below using Google Gemini.
 // Privacy: visitor messages are never logged or stored. Only upstream status codes are logged on failure.
 
-const MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3.6-flash';
 const MAX_LEN = 500;
 const MAX_HISTORY = 6;
 const TIMEOUT_MS = 20000;
