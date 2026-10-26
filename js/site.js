@@ -146,7 +146,7 @@
   if (pill) {
     var pillLabel = pill.querySelector('.pill-label');
     var pillBtn = pill.querySelector('.pill-menu');
-    var sections = [['top', 'Home'], ['about', 'About'], ['services', 'Services'], ['work', 'Projects'], ['videos', 'Videos'], ['experience', 'Experience'], ['contact', 'Contact']]
+    var sections = [['top', 'Home'], ['about', 'About'], ['services', 'Services'], ['process', 'Process'], ['work', 'Projects'], ['videos', 'Videos'], ['experience', 'Experience'], ['contact', 'Contact']]
       .map(function (p) { return { el: document.getElementById(p[0]), name: p[1] }; })
       .filter(function (p) { return p.el; });
     function setPill(open) {
@@ -305,6 +305,73 @@
       if (photo) photo.style.transform = 'translateY(' + y * 0.12 + 'px)';
       lines.forEach(function (l, i) { l.style.transform = 'translateX(' + (i ? 1 : -1) * y * 0.15 + 'px)'; });
     }, { passive: true });
+  }
+
+  // Process: section stays pinned while steps, image and progress bar advance
+  var track = document.querySelector('.proc-track');
+  if (track && !reduce) {
+    var pImgs = track.querySelectorAll('.proc-img');
+    var pSteps = track.querySelectorAll('.proc-steps li');
+    var pBar = track.querySelector('.proc-bar span');
+    var pNum = track.querySelector('.proc-count b');
+    var pCur = -1, pTick = false;
+    function procUpdate() {
+      pTick = false;
+      var r = track.getBoundingClientRect();
+      var total = r.height - window.innerHeight;
+      var p = Math.max(0, Math.min(1, -r.top / (total > 0 ? total : 1)));
+      pBar.style.width = (p * 100).toFixed(2) + '%';
+      var i = Math.min(pSteps.length - 1, Math.floor(p * pSteps.length));
+      if (i === pCur) return;
+      pCur = i;
+      for (var n = 0; n < pSteps.length; n++) {
+        pSteps[n].classList.toggle('is-on', n === i);
+        if (pImgs[n]) pImgs[n].classList.toggle('is-on', n === i);
+      }
+      pNum.textContent = ('0' + (i + 1)).slice(-2);
+    }
+    function procQueue() { if (!pTick) { pTick = true; requestAnimationFrame(procUpdate); } }
+    window.addEventListener('scroll', procQueue, { passive: true });
+    window.addEventListener('resize', procQueue);
+    procUpdate();
+  }
+
+  // Contact form → Web3Forms (sends email to shethdharmik3@gmail.com)
+  var cf = document.getElementById('cf');
+  if (cf) {
+    cf.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!cf.checkValidity()) { cf.reportValidity(); return; }
+      var btn = document.getElementById('cf-submit');
+      var status = document.getElementById('cf-status');
+      btn.disabled = true;
+      btn.classList.add('sending');
+      status.textContent = 'Sending…';
+      status.className = 'cf-status';
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: new FormData(cf)
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        btn.disabled = false;
+        btn.classList.remove('sending');
+        if (data.success) {
+          status.textContent = '✓ Message sent! I’ll get back to you soon.';
+          status.className = 'cf-status ok';
+          cf.reset();
+        } else {
+          status.textContent = '✕ Something went wrong. Please try emailing me directly.';
+          status.className = 'cf-status err';
+        }
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.classList.remove('sending');
+        status.textContent = '✕ Network error. Please try emailing me directly.';
+        status.className = 'cf-status err';
+      });
+    });
   }
 
   document.getElementById('year').textContent = new Date().getFullYear();

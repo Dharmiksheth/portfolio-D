@@ -200,10 +200,38 @@
       </div>
     </section>
 
+    <!-- PROCESS -->
+    <section class="section process" id="process">
+      <div class="wrap">
+        <p class="eyebrow"><span>03</span> Process</p>
+        <h2 class="sec-title">How I <span class="hl">work</span> <span class="rule"></span></h2>
+      </div>
+      <div class="proc-track" style="--steps: 4">
+        <div class="proc-pin">
+          <div class="wrap proc-grid">
+            <div class="proc-frame">
+              <img class="proc-img is-on" src="assets/img/nw/hero.jpg" alt="" loading="lazy" style="object-position:30% 50%">
+              <img class="proc-img" src="assets/img/nw/stairs.jpg" alt="" loading="lazy">
+              <img class="proc-img" src="assets/img/nw/code.jpg" alt="" loading="lazy">
+              <img class="proc-img" src="assets/img/nw/hero.jpg" alt="" loading="lazy" style="object-position:80% 50%">
+              <span class="proc-count"><b>01</b> / 04</span>
+            </div>
+            <ol class="proc-steps">
+              <li class="is-on"><span class="s-num">01</span><h3>Audit &amp; Discovery</h3><p>I crawl, measure and map every technical issue so we start from facts, not guesses.</p></li>
+              <li><span class="s-num">02</span><h3>Research &amp; Strategy</h3><p>Keyword and competitor research turns into a clear, prioritised content and link plan.</p></li>
+              <li><span class="s-num">03</span><h3>Build &amp; Automate</h3><p>Fixes ship, content goes live, and Python tools and n8n workflows remove the repetitive work.</p></li>
+              <li><span class="s-num">04</span><h3>Measure &amp; Scale</h3><p>GA4 and Search Console reporting shows what is working, then we double down on it.</p></li>
+            </ol>
+          </div>
+          <div class="wrap"><div class="proc-bar"><span></span></div></div>
+        </div>
+      </div>
+    </section>
+
     <!-- WORK -->
     <section class="section work" id="work">
       <div class="wrap">
-        <p class="eyebrow"><span>03</span> Projects</p>
+        <p class="eyebrow"><span>04</span> Projects</p>
         <h2 class="sec-title">Things I've <span class="hl">built</span> <span class="rule"></span></h2>
 
         <article class="feature" data-grow data-cursor="Visit">
@@ -262,7 +290,7 @@
     <!-- VIDEOS -->
     <section class="section videos" id="videos" data-dark>
       <div class="wrap">
-        <p class="eyebrow eyebrow-light"><span>04</span> Video</p>
+        <p class="eyebrow eyebrow-light"><span>05</span> Video</p>
         <div class="videos-head">
           <h2 class="big-title">Made with AI.<br><em>Edited by hand.</em></h2>
           <p>I script, generate and edit short-form marketing videos with Gemini, Google Flow and Google Vids: from concept and scene prompts to AI presenters, the final cut, subtitles and end cards. A recent series for a Google review stand product:</p>
@@ -330,7 +358,7 @@
     <!-- EXPERIENCE -->
     <section class="section experience" id="experience">
       <div class="wrap">
-        <p class="eyebrow"><span>05</span> Career</p>
+        <p class="eyebrow"><span>06</span> Career</p>
         <h2 class="sec-title">Experience <span class="rule"></span> &amp; <span class="hl">skills</span></h2>
         <ol class="timeline">
           <li class="reveal">
@@ -386,7 +414,7 @@
     <!-- CONTACT -->
     <section class="contact" id="contact" data-dark>
       <div class="wrap">
-        <p class="eyebrow eyebrow-light"><span>06</span> Contact</p>
+        <p class="eyebrow eyebrow-light"><span>07</span> Contact</p>
         <h2 class="contact-title"><span class="line"><span>Let's make your</span></span><span class="line"><span>site <em>rank.</em></span></span></h2>
         <div class="contact-row">
           <div class="magnet-wrap">
@@ -400,6 +428,46 @@
             <li><span>Resume</span><a href="assets/Dharmik_Sheth_Resume.pdf" download>Download PDF ↓</a></li>
           </ul>
         </div>
+
+        <!-- CONTACT FORM -->
+        <form class="cf reveal" id="cf" novalidate>
+          <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY">
+          <input type="hidden" name="subject" value="New enquiry from your portfolio site">
+          <input type="hidden" name="from_name" value="Dharmik Portfolio">
+          <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+          <div class="cf-row">
+            <label class="cf-field">
+              <span>Name <em>*</em></span>
+              <input type="text" name="name" placeholder="Your full name" required autocomplete="name">
+            </label>
+            <label class="cf-field">
+              <span>Email <em>*</em></span>
+              <input type="email" name="email" placeholder="your@email.com" required autocomplete="email">
+            </label>
+          </div>
+          <label class="cf-field">
+            <span>What do you need?</span>
+            <select name="service">
+              <option value="">Select a service…</option>
+              <option>Technical SEO audit</option>
+              <option>Link building &amp; outreach</option>
+              <option>Content strategy</option>
+              <option>Python / AI automation</option>
+              <option>AI marketing video</option>
+              <option>Something else</option>
+            </select>
+          </label>
+          <label class="cf-field">
+            <span>Message <em>*</em></span>
+            <textarea name="message" rows="5" placeholder="Tell me about your project or website…" required></textarea>
+          </label>
+          <div class="cf-foot">
+            <button class="btn btn-pill cf-btn" type="submit" id="cf-submit">
+              Send message <span class="dot" aria-hidden="true">→</span>
+            </button>
+            <p class="cf-status" id="cf-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
       </div>
       <p class="giant-name" aria-hidden="true"><span data-split>Dharmik Sheth</span></p>
       <footer class="site-footer wrap">
@@ -418,6 +486,7 @@
     <ul class="pill-links" id="pill-links">
       <li><a href="#about">About</a></li>
       <li><a href="#services">Services</a></li>
+      <li><a href="#process">Process</a></li>
       <li><a href="#work">Projects</a></li>
       <li><a href="#videos">Videos</a></li>
       <li><a href="#experience">Experience</a></li>
