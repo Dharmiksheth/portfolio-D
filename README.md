@@ -25,14 +25,18 @@ using Google Gemini. In Vercel → Project → Settings → Environment Variable
 
 - `GEMINI_API_KEY` — required. Never commit it.
 - `GEMINI_MODEL` — optional, defaults to `gemini-3.6-flash`.
+- `ALLOWED_ORIGINS` — optional, extra domains allowed to use the chat (e.g. a custom domain).
+
+The chat endpoint only answers requests from this site and limits each visitor to
+6 messages a minute and 30 an hour.
 
 If the API is unavailable the widget shows a fallback message with the email address;
 the rest of the site is unaffected. Visitor messages are not logged or stored.
 
 ## After the first deploy
 
-The site uses `https://dharmiksheth.vercel.app/` as a placeholder URL. Replace it
-with your real Vercel URL or custom domain in:
+The site's address is `https://dharmiksheth.vercel.app/`. If you move to a custom
+domain, update it in:
 
 - `index.html` (canonical, `og:url`, `og:image`, JSON-LD `url`)
 - `robots.txt`

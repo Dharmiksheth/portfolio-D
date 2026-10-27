@@ -1,11 +1,20 @@
 // Vercel serverless function: POST /api/chat  ->  { reply }
 // Answers questions about Dharmik from the knowledge base below using Google Gemini.
 // Privacy: visitor messages are never logged or stored. Only upstream status codes are logged on failure.
+// Security: the Gemini key lives only in Vercel's environment (process.env) and is never sent to the browser.
 
 const MODEL = process.env.GEMINI_MODEL || 'gemini-3.6-flash';
 const MAX_LEN = 500;
 const MAX_HISTORY = 6;
 const TIMEOUT_MS = 20000;
+
+// Abuse protection: each visitor (IP) gets a few messages per minute and per hour.
+// Counts live in this function instance's memory, so they are a first line of defence;
+// a Vercel Firewall rate-limit rule on /api/chat adds a limit across all instances.
+const LIMITS = [
+  { windowMs: 60 * 1000, max: 6 },        // 6 messages per minute
+  { windowMs: 60 * 60 * 1000, max: 30 },  // 30 messages per hour
+];
 
 const KNOWLEDGE = `
 ABOUT
@@ -33,6 +42,8 @@ PROJECTS
 - SEO Automation Toolkit: ten Python tools for metadata analysis, image extraction, internal link auditing and AI-assisted content generation: meta tag scraper and optimizer, image URL extractor, alt tag checker, internal link analyzer, and AI generators for titles, meta descriptions, blogs and articles. Used daily, cutting audit turnaround roughly in half. (Python, web scraping, LLM APIs)
 - n8n Content Workflow: an automated pipeline that connects content generation, review and blog publishing, with no manual handoffs between steps. (n8n, AI APIs, WordPress)
 - AI Website Chatbot: an AI chatbot for an engineering services company website, answering visitor questions from a custom knowledge base with Google Gemini and capturing leads by email. (API integration, knowledge base, prompting)
+  - Features: answers only from a custom knowledge base of company information, FAQs and service pages; lead capture with a short form after a couple of messages, emailed to the sales team; picks up the visitor's name, email and phone from the conversation; page-aware greetings; suggested questions, typing indicator and full-screen mobile layout; automatic retry when the AI API is rate-limited.
+  - Built with HTML, Tailwind CSS, vanilla JavaScript, PHP, Google Gemini API and PHPMailer. The assistant on this site is a lighter version of the same idea.
 - Content Asset Library: case studies, guides, checklists and downloadable resources on mechanical design, FEA/CFD, sheet metal and reverse engineering, created to drive organic acquisition and support guest-post placement.
 - This portfolio assistant: built by Dharmik with plain JavaScript and a Vercel serverless function calling Google Gemini.
 
@@ -80,6 +91,59 @@ When asked how to contact Dharmik, give his email (shethdharmik3@gmail.com) and 
 
 KNOWLEDGE
 ${KNOWLEDGE}`;
+
+// ---- Who may call this endpoint ----
+// Only pages on this site (production, its preview deployments, local testing)
+// plus any hosts listed in the optional ALLOWED_ORIGINS env var (comma-separated).
+function allowedHosts() {
+  const hosts = new Set(['dharmiksheth.vercel.app', 'localhost', '127.0.0.1']);
+  for (const v of [process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL, process.env.VERCEL_PROJECT_PRODUCTION_URL]) {
+    if (v) hosts.add(v.toLowerCase());
+  }
+  for (const h of (process.env.ALLOWED_ORIGINS || '').split(',')) {
+    const host = h.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+    if (host) hosts.add(host);
+  }
+  return hosts;
+}
+
+function isAllowedOrigin(origin) {
+  if (!origin) return false;
+  let host;
+  try { host = new URL(origin).hostname.toLowerCase(); } catch { return false; }
+  if (allowedHosts().has(host)) return true;
+  // Preview deployments of this project, e.g. dharmiksheth-git-branch-dharmik00s-projects.vercel.app
+  return /^dharmiksheth-[a-z0-9-]+-dharmik00s-projects\.vercel\.app$/.test(host);
+}
+
+// ---- Per-visitor rate limit (in memory, IP addresses are not stored anywhere else) ----
+const hits = new Map(); // ip -> array of timestamps
+
+function clientIp(req) {
+  const h = req.headers || {};
+  const fwd = String(h['x-forwarded-for'] || h['x-real-ip'] || '').split(',')[0].trim();
+  return fwd || req.socket?.remoteAddress || 'unknown';
+}
+
+// Returns seconds to wait if the visitor is over a limit, otherwise 0 (and records the hit).
+function rateLimit(ip) {
+  const now = Date.now();
+  const longest = Math.max(...LIMITS.map((l) => l.windowMs));
+  const times = (hits.get(ip) || []).filter((t) => now - t < longest);
+  for (const { windowMs, max } of LIMITS) {
+    const inWindow = times.filter((t) => now - t < windowMs);
+    if (inWindow.length >= max) {
+      hits.set(ip, times);
+      return Math.ceil((inWindow[0] + windowMs - now) / 1000);
+    }
+  }
+  times.push(now);
+  hits.set(ip, times);
+  if (hits.size > 5000) { // keep memory small: drop the oldest visitors
+    for (const key of hits.keys()) { hits.delete(key); if (hits.size <= 4000) break; }
+  }
+  return 0;
+}
 
 function cleanHistory(raw) {
   if (!Array.isArray(raw)) return [];
@@ -146,6 +210,16 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  if (!isAllowedOrigin(req.headers?.origin)) {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
+  const wait = rateLimit(clientIp(req));
+  if (wait > 0) {
+    res.setHeader('Retry-After', String(wait));
+    return res.status(429).json({ error: 'Too many messages. Please wait a few minutes.' });
   }
 
   let body = req.body;

@@ -10,6 +10,7 @@
   var MAX_HISTORY = 6;
   var CLIENT_TIMEOUT_MS = 25000;
   var FALLBACK = "Sorry, I can't answer right now. Email " + EMAIL;
+  var RATE_LIMITED = "You've sent a lot of messages in a short time. Please wait a few minutes and try again, or email " + EMAIL;
   var GREETING = "Hi! I'm Dharmik's assistant. Ask me about his work, projects or how to reach him.";
   var SUGGESTIONS = ['What does Dharmik do?', 'What projects has he built?', 'How can I contact him?'];
 
@@ -117,6 +118,9 @@
     });
     form.addEventListener('submit', function (e) { e.preventDefault(); send(input.value); });
 
+    // Lets other parts of the page (e.g. project popups) open the chat with a question
+    window.dcAsk = function (question) { setOpen(true); send(question); };
+
     function addMessage(who, text, isError) {
       var m = el('div', 'dc-msg ' + (who === 'user' ? 'dc-user' : 'dc-bot') + (isError ? ' dc-err' : ''), format(text));
       log.appendChild(m);
@@ -160,6 +164,7 @@
         signal: ctrl ? ctrl.signal : undefined
       })
         .then(function (r) {
+          if (r.status === 429) { var e = new Error('rate'); e.rate = true; throw e; }
           if (!r.ok) throw new Error('HTTP ' + r.status);
           return r.json();
         })
@@ -171,9 +176,9 @@
           history.push({ role: 'user', text: text }, { role: 'model', text: reply.slice(0, MAX_LEN) });
           if (history.length > MAX_HISTORY) history = history.slice(-MAX_HISTORY);
         })
-        .catch(function () {
+        .catch(function (err) {
           typing.remove();
-          addMessage('bot', FALLBACK, true);
+          addMessage('bot', err && err.rate ? RATE_LIMITED : FALLBACK, true);
         })
         .then(function () {
           if (timer) clearTimeout(timer);

@@ -7,7 +7,6 @@
   <meta name="description" content="Dharmik Sheth is a Technical SEO and AI Automation Specialist in Ahmedabad, India. I run in-house technical SEO, link building and content, build Python SEO tools and AI workflows, and produce AI marketing videos that help brands grow.">
   <meta name="author" content="Dharmik Sheth">
   <meta name="robots" content="index, follow">
-  <!-- TODO: replace with your final domain once deployed on Vercel -->
   <link rel="canonical" href="https://dharmiksheth.vercel.app/">
 
   <!-- Open Graph / social sharing -->
@@ -93,9 +92,10 @@
         <span>Portfolio ’26</span>
       </div>
 
-      <h1 class="hero-name" aria-label="Dharmik Sheth">
+      <h1 class="hero-name" aria-label="Dharmik Sheth, Technical SEO &amp; AI Automation Specialist">
         <span class="line line-1" aria-hidden="true"><span data-split>Dharmik</span></span>
         <span class="line line-2" aria-hidden="true"><span data-split>Sheth</span></span>
+        <span class="sr-only" aria-hidden="true">, Technical SEO &amp; AI Automation Specialist</span>
       </h1>
 
       <div class="hero-photo">
@@ -265,24 +265,64 @@
             <h3>SEO Automation Toolkit</h3>
             <p>Ten Python tools for metadata analysis, image extraction, internal link auditing and AI-assisted content generation: meta tag scraper and optimizer, image URL extractor, alt tag checker, internal link analyzer, and AI generators for titles, meta descriptions, blogs and articles. Used daily, cutting audit turnaround roughly in half.</p>
             <p class="w-tags">Python · Web scraping · LLM APIs</p>
+            <button class="w-open" type="button" aria-haspopup="dialog" data-project="proj-a">View details <span aria-hidden="true">↗</span></button>
+            <template id="proj-a">
+              <p class="pm-num">Project A</p>
+              <h3>SEO Automation Toolkit</h3>
+              <p>A suite of ten Python tools I built to take the repetitive work out of on-page SEO: metadata analysis, image extraction, internal link auditing and AI-assisted content generation.</p>
+              <h4>What's in it</h4>
+              <ul><li>Meta tag scraper and optimizer</li><li>Image URL extractor</li><li>Alt tag checker</li><li>Internal link analyzer</li><li>AI generators for titles, meta descriptions, blogs and articles</li></ul>
+              <h4>Result</h4>
+              <p>Used daily. On-page analysis and data scraping went from 1–2 days to one day per site, roughly halving audit turnaround.</p>
+              <p class="w-tags">Python · Web scraping · LLM APIs</p>
+            </template>
           </article>
           <article class="work-card reveal" data-cursor="View">
             <span class="w-num">B</span>
             <h3>n8n Content Workflow</h3>
             <p>An automated pipeline that connects content generation, review and blog publishing, with no manual handoffs between steps.</p>
             <p class="w-tags">n8n · AI APIs · WordPress</p>
+            <button class="w-open" type="button" aria-haspopup="dialog" data-project="proj-b">View details <span aria-hidden="true">↗</span></button>
+            <template id="proj-b">
+              <p class="pm-num">Project B</p>
+              <h3>n8n Content Workflow</h3>
+              <p>An automated pipeline that connects content generation, review and blog publishing, with no manual handoffs between steps.</p>
+              <h4>How it flows</h4>
+              <ol><li>Content generation with AI APIs</li><li>Review</li><li>Blog publishing to WordPress</li></ol>
+              <p class="w-tags">n8n · AI APIs · WordPress</p>
+            </template>
           </article>
           <article class="work-card reveal" data-cursor="View">
             <span class="w-num">C</span>
             <h3>AI Website Chatbot</h3>
             <p>An AI chatbot for an engineering services company website, answering visitor questions from a custom knowledge base with Google Gemini and capturing leads by email.</p>
             <p class="w-tags">API integration · Knowledge base · Prompting</p>
+            <button class="w-open" type="button" aria-haspopup="dialog" data-project="proj-c">View details <span aria-hidden="true">↗</span></button>
+            <template id="proj-c">
+              <p class="pm-num">Project C</p>
+              <h3>AI Website Chatbot</h3>
+              <p>An AI chatbot for an engineering services company website, answering visitor questions from a custom knowledge base with Google Gemini and capturing leads by email.</p>
+              <h4>Key features</h4>
+              <ul><li>Answers only from a custom knowledge base of company information, FAQs and service pages, so it stays on topic</li><li>Lead capture: a short form after a couple of messages, emailed to the sales team</li><li>Picks up the visitor's name, email and phone from the conversation automatically</li><li>Page-aware greetings matched to the page the visitor is on</li><li>Suggested questions, typing indicator and a full-screen mobile layout</li><li>Automatic retry when the AI API is rate-limited</li></ul>
+              <h4>Built with</h4>
+              <p>HTML, Tailwind CSS, vanilla JavaScript, PHP, Google Gemini API and PHPMailer. The assistant on this site is a lighter version of the same idea.</p>
+              <p class="w-tags">API integration · Knowledge base · Prompting</p>
+            </template>
           </article>
           <article class="work-card reveal" data-cursor="View">
             <span class="w-num">D</span>
             <h3>Content Asset Library</h3>
             <p>Case studies, guides, checklists and downloadable resources on mechanical design, FEA/CFD, sheet metal and reverse engineering, created to drive organic acquisition and support guest-post placement.</p>
             <p class="w-tags">Content strategy · Technical writing · Link building</p>
+            <button class="w-open" type="button" aria-haspopup="dialog" data-project="proj-d">View details <span aria-hidden="true">↗</span></button>
+            <template id="proj-d">
+              <p class="pm-num">Project D</p>
+              <h3>Content Asset Library</h3>
+              <p>Case studies, guides, checklists and downloadable resources on mechanical design, FEA/CFD, sheet metal and reverse engineering.</p>
+              <h4>What it's for</h4>
+              <ul><li>Driving organic acquisition</li><li>Supporting guest-post placement</li></ul>
+              <p class="w-tags">Content strategy · Technical writing · Link building</p>
+            </template>
           </article>
         </div>
       </div>
@@ -462,6 +502,7 @@
             <span>Message <em>*</em></span>
             <textarea name="message" rows="5" placeholder="Tell me about your project or website…" required></textarea>
           </label>
+          <div class="h-captcha" data-captcha="true" data-theme="dark"></div>
           <div class="cf-foot">
             <button class="btn btn-pill cf-btn" type="submit" id="cf-submit">
               Send message <span class="dot" aria-hidden="true">→</span>
@@ -477,6 +518,16 @@
       </footer>
     </section>
   </main>
+
+  <dialog class="pm" id="project-modal" aria-labelledby="pm-title">
+    <div class="pm-inner">
+      <button class="pm-close" type="button" aria-label="Close project details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="pm-body"></div>
+      <div class="pm-actions">
+        <button class="btn btn-ink pm-ask" type="button">Ask my assistant about this <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+  </dialog>
 
   <nav class="pill" aria-label="Quick navigation">
     <a class="pill-home" href="#top" aria-label="Back to top">
@@ -502,5 +553,6 @@
 
   <script src="js/site.js" defer></script>
   <script src="js/chat.js" defer></script>
+  <script src="https://web3forms.com/client/script.js" async defer></script>
 </body>
 </html>
