@@ -46,6 +46,12 @@
   var ICON_MARK = '<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="20" cy="27" r="9" fill="none" stroke="#fff" stroke-width="4.5"/><path d="M29 9v18" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/><path d="M27 34l7 7" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/></svg>';
 
   function init() {
+    // Styles load here (not in <head>) so they never delay the first paint.
+    var css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = 'css/chat.css?v=20261028';
+    document.head.appendChild(css);
+
     var launch = el('button', 'dc-launch', ICON_CHAT + ICON_X.replace('<svg ', '<svg class="dc-ico-close" '));
     launch.type = 'button';
     launch.setAttribute('aria-label', "Open chat with Dharmik's assistant");
@@ -98,8 +104,12 @@
     panel.appendChild(log);
     panel.appendChild(chips);
     panel.appendChild(form);
+    panel.hidden = true; launch.hidden = true; // show once styles are ready
     document.body.appendChild(panel);
     document.body.appendChild(launch);
+    function reveal() { panel.hidden = false; launch.hidden = false; }
+    css.addEventListener('load', reveal);
+    setTimeout(reveal, 4000);
 
     addMessage('bot', GREETING);
 
@@ -130,6 +140,7 @@
 
     function showTyping() {
       var t = el('div', 'dc-msg dc-bot dc-typing', '<span></span><span></span><span></span>');
+      t.setAttribute('role', 'status');
       t.setAttribute('aria-label', 'Assistant is typing');
       log.appendChild(t);
       log.scrollTop = log.scrollHeight;

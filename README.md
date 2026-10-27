@@ -33,6 +33,17 @@ The chat endpoint only answers requests from this site and limits each visitor t
 If the API is unavailable the widget shows a fallback message with the email address;
 the rest of the site is unaffected. Visitor messages are not logged or stored.
 
+## Caching (important when you change files)
+
+Browsers keep CSS, JS and files in `assets/` for up to a year, which makes repeat visits fast.
+
+- After editing `css/` or `js/` files, bump the `?v=` number on their links in `index.html` (and in `js/chat.js` for `chat.css`).
+- To replace an image or video, give the new file a new name (e.g. `hero-2.webp`) instead of overwriting the old one.
+
+## Agents and AI search
+
+`llms.txt` gives AI assistants a plain-text summary of the site. Keep it in step with `index.html`.
+
 ## After the first deploy
 
 The site's address is `https://dharmiksheth.vercel.app/`. If you move to a custom

@@ -338,6 +338,24 @@
 
   // Contact form → Web3Forms (sends email to shethdharmik3@gmail.com)
   var cf = document.getElementById('cf');
+  // hCaptcha is heavy (~1 MB), so load the Web3Forms/hCaptcha script only when the
+  // visitor gets close to the form or starts typing in it.
+  var captchaLoaded = false;
+  function loadCaptcha() {
+    if (captchaLoaded) return; captchaLoaded = true;
+    var s = document.createElement('script');
+    s.src = 'https://web3forms.com/client/script.js'; s.async = true;
+    document.body.appendChild(s);
+  }
+  if (cf) {
+    if ('IntersectionObserver' in window) {
+      var cio = new IntersectionObserver(function (entries) {
+        if (entries.some(function (en) { return en.isIntersecting; })) { loadCaptcha(); cio.disconnect(); }
+      }, { rootMargin: '800px 0px' });
+      cio.observe(cf);
+    } else { loadCaptcha(); }
+    cf.addEventListener('focusin', loadCaptcha);
+  }
   if (cf) {
     cf.addEventListener('submit', function (e) {
       e.preventDefault();
