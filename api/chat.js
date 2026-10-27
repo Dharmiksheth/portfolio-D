@@ -213,11 +213,14 @@ export default async function handler(req, res) {
   }
 
   if (!isAllowedOrigin(req.headers?.origin)) {
+    // Logs only the requesting site's address, never the visitor's message.
+    console.error(`chat: refused request from origin ${String(req.headers?.origin || 'none').slice(0, 120)}`);
     return res.status(403).json({ error: 'Forbidden' });
   }
 
   const wait = rateLimit(clientIp(req));
   if (wait > 0) {
+    console.error('chat: rate limit reached');
     res.setHeader('Retry-After', String(wait));
     return res.status(429).json({ error: 'Too many messages. Please wait a few minutes.' });
   }
