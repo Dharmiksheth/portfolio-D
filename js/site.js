@@ -383,6 +383,31 @@
     });
   }
 
+  // Footer name: letters near the cursor light up blue (mouse/trackpad only)
+  var giant = document.querySelector('.giant-name');
+  if (giant && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    var gChars = giant.querySelectorAll('.ch');
+    var gX = null, gRaf = 0;
+    function gMix(t) { // white → #3d66ff
+      return 'rgb(' + Math.round(255 - 194 * t) + ',' + Math.round(255 - 153 * t) + ',255)';
+    }
+    function gPaint() {
+      gRaf = 0;
+      var radius = Math.max(giant.offsetWidth * 0.12, 80);
+      gChars.forEach(function (c) {
+        var t = 0;
+        if (gX !== null) {
+          var r = c.getBoundingClientRect();
+          t = Math.max(0, 1 - Math.abs(r.left + r.width / 2 - gX) / radius);
+        }
+        c.style.color = t > 0 ? gMix(t) : '';
+        c.style.textShadow = t > 0 ? '0 0 ' + Math.round(32 * t) + 'px rgba(61,102,255,' + (0.55 * t).toFixed(2) + ')' : '';
+      });
+    }
+    giant.addEventListener('mousemove', function (e) { gX = e.clientX; if (!gRaf) gRaf = requestAnimationFrame(gPaint); });
+    giant.addEventListener('mouseleave', function () { gX = null; if (!gRaf) gRaf = requestAnimationFrame(gPaint); });
+  }
+
   // Project cards → details popup
   var pm = document.getElementById('project-modal');
   if (pm && typeof pm.showModal === 'function') {

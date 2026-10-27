@@ -602,12 +602,14 @@ button { font: inherit; color: inherit; }
 .giant-name { margin-top: clamp(96px, 12vw, 180px); padding-bottom: .05em; line-height: .9; }
 .giant-name + .site-footer { margin-top: clamp(8px, 1.5vw, 20px); }
 
-/* Colour wave across the footer name (runs after the letters rise in) */
-.js .giant-name.in .ch { animation: name-wave 6s ease-in-out infinite; animation-delay: calc(1.4s + var(--i) * 90ms); }
+/* Colour wave across the footer name: plays once when it first comes into view,
+   then letters near the cursor light up (see js/site.js) */
+.js .giant-name .ch { transition: transform 1s var(--ease), color .3s, text-shadow .3s; transition-delay: calc(var(--i) * 40ms), 0s, 0s; }
+.js .giant-name.in .ch { animation: name-wave 2.4s ease-in-out 1; animation-delay: calc(1.2s + var(--i) * 90ms); }
 @keyframes name-wave {
-  0%, 40%, 100% { color: #fff; text-shadow: none; }
-  12% { color: #3d66ff; text-shadow: 0 0 32px rgba(61, 102, 255, .55); }
-  24% { color: #8aa4ff; text-shadow: 0 0 18px rgba(138, 164, 255, .35); }
+  0%, 100% { color: #fff; text-shadow: none; }
+  30% { color: #3d66ff; text-shadow: 0 0 32px rgba(61, 102, 255, .55); }
+  60% { color: #8aa4ff; text-shadow: 0 0 18px rgba(138, 164, 255, .35); }
 }
 @media (prefers-reduced-motion: reduce) { .js .giant-name.in .ch { animation: none !important; } }
 @media (max-width: 720px) { .site-footer { padding-bottom: 96px; } } /* clear the floating menu and chat button */
