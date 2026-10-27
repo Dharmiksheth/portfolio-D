@@ -47,12 +47,15 @@ PROJECTS
 - Content Asset Library: case studies, guides, checklists and downloadable resources on mechanical design, FEA/CFD, sheet metal and reverse engineering, created to drive organic acquisition and support guest-post placement.
 - This portfolio assistant: built by Dharmik with plain JavaScript and a Vercel serverless function calling Google Gemini.
 
-AI VIDEOS ("Made with AI. Edited by hand.")
-- He scripts, generates and edits short-form marketing videos with Gemini, Google Flow and Google Vids: from concept and scene prompts to AI presenters, the final cut, subtitles and end cards. A recent series for a Google review stand product:
-- Review stand explainer (10s): AI presenter introducing a Google review stand, with product close-ups.
-- Multi-industry ad (19s): restaurant, salon and clinic owners in one ad, with burned-in subtitles and an end card.
-- Café owner testimonial (16s): talking-head testimonial style story, lit and framed like a real shoot.
-- Bakery customer story (19s): a cinematic product-in-use scene following a customer at the counter.
+AI VIDEOS ("Short-form ads, made to sell.")
+- He produces short-form video ads for a US client (client name not public) to promote their products and services on social media and in paid ads. He handles every stage: concept, script, scene direction, AI presenters, the final edit, subtitles and end cards, using Gemini, Google Flow and Google Vids.
+- Why AI video instead of a traditional shoot: it saves time and cost, gives full control over every scene, and new versions can be made whenever they are needed.
+- The campaign is ongoing, so there are no published results yet. All presenters and scenes are AI-generated.
+- From the current campaign for a Google review stand product:
+- Review stand explainer (10s): a quick product explainer for social feeds; an AI presenter introduces the Google review stand, with product close-ups.
+- Multi-industry ad (19s): one ad that speaks to restaurant, salon and clinic owners at once, with burned-in subtitles for viewers watching without sound and an end card.
+- Café owner testimonial (16s): a testimonial-style story with an AI presenter, lit and framed like a real shoot.
+- Bakery customer story (19s): a cinematic scene showing the product in use, following a customer at the counter.
 
 EXPERIENCE
 - SEO Executive (In-House), Tesla Outsourcing Services, Ahmedabad, Mar 2025 – present:
