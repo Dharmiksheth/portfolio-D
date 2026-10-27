@@ -344,6 +344,13 @@
       if (!cf.checkValidity()) { cf.reportValidity(); return; }
       var btn = document.getElementById('cf-submit');
       var status = document.getElementById('cf-status');
+      // hCaptcha (spam protection): the widget adds this field once it has loaded
+      var captcha = cf.querySelector('textarea[name="h-captcha-response"]');
+      if (captcha && !captcha.value) {
+        status.textContent = 'Please tick “I am human” before sending.';
+        status.className = 'cf-status err';
+        return;
+      }
       btn.disabled = true;
       btn.classList.add('sending');
       status.textContent = 'Sending…';
@@ -360,9 +367,11 @@
           status.textContent = '✓ Message sent! I’ll get back to you soon.';
           status.className = 'cf-status ok';
           cf.reset();
+          if (window.hcaptcha) { try { window.hcaptcha.reset(); } catch (err) {} }
         } else {
           status.textContent = '✕ Something went wrong. Please try emailing me directly.';
           status.className = 'cf-status err';
+          if (window.hcaptcha) { try { window.hcaptcha.reset(); } catch (err) {} }
         }
       })
       .catch(function () {
@@ -372,6 +381,65 @@
         status.className = 'cf-status err';
       });
     });
+  }
+
+  // Footer name: letters near the cursor light up blue (mouse/trackpad only)
+  var giant = document.querySelector('.giant-name');
+  if (giant && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    var gChars = giant.querySelectorAll('.ch');
+    var gX = null, gRaf = 0;
+    function gMix(t) { // white → #3d66ff
+      return 'rgb(' + Math.round(255 - 194 * t) + ',' + Math.round(255 - 153 * t) + ',255)';
+    }
+    function gPaint() {
+      gRaf = 0;
+      var radius = Math.max(giant.offsetWidth * 0.12, 80);
+      gChars.forEach(function (c) {
+        var t = 0;
+        if (gX !== null) {
+          var r = c.getBoundingClientRect();
+          t = Math.max(0, 1 - Math.abs(r.left + r.width / 2 - gX) / radius);
+        }
+        c.style.color = t > 0 ? gMix(t) : '';
+        c.style.textShadow = t > 0 ? '0 0 ' + Math.round(32 * t) + 'px rgba(61,102,255,' + (0.55 * t).toFixed(2) + ')' : '';
+      });
+    }
+    giant.addEventListener('mousemove', function (e) { gX = e.clientX; if (!gRaf) gRaf = requestAnimationFrame(gPaint); });
+    giant.addEventListener('mouseleave', function () { gX = null; if (!gRaf) gRaf = requestAnimationFrame(gPaint); });
+  }
+
+  // Project cards → details popup
+  var pm = document.getElementById('project-modal');
+  if (pm && typeof pm.showModal === 'function') {
+    var pmBody = pm.querySelector('.pm-body');
+    var pmTitle = '';
+    var pmOpener = null;
+    var ask = pm.querySelector('.pm-ask');
+    function openProject(btn) {
+      var tpl = document.getElementById(btn.getAttribute('data-project'));
+      if (!tpl) return;
+      pmBody.innerHTML = '';
+      pmBody.appendChild(tpl.content.cloneNode(true));
+      var h = pmBody.querySelector('h3');
+      if (h) { h.id = 'pm-title'; pmTitle = h.textContent; }
+      pmBody.scrollTop = 0;
+      ask.hidden = typeof window.dcAsk !== 'function'; // chat widget loads after this file
+      pmOpener = btn;
+      pm.showModal();
+    }
+    document.querySelectorAll('.w-open').forEach(function (btn) {
+      btn.addEventListener('click', function () { openProject(btn); });
+    });
+    pm.querySelector('.pm-close').addEventListener('click', function () { pm.close(); });
+    pm.addEventListener('click', function (e) { if (e.target === pm) pm.close(); }); // click on backdrop
+    pm.addEventListener('close', function () { if (pmOpener) pmOpener.focus(); });
+    ask.addEventListener('click', function () {
+      pm.close();
+      if (typeof window.dcAsk === 'function') window.dcAsk('Tell me more about the ' + pmTitle + ' project.');
+    });
+  } else if (pm) {
+    // Very old browsers without <dialog>: hide the buttons rather than show broken ones
+    document.querySelectorAll('.w-open').forEach(function (b) { b.hidden = true; });
   }
 
   document.getElementById('year').textContent = new Date().getFullYear();
