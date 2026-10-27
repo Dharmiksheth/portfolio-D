@@ -1,4 +1,7 @@
+# Dharmik Sheth portfolio
 User-agent: *
 Allow: /
+# The chat assistant's API is not a page; keep it out of search results
+Disallow: /api/
 
 Sitemap: https://dharmiksheth.vercel.app/sitemap.xml
