@@ -76,3 +76,4 @@
   .dc-panel, .dc-launch, .dc-launch svg, .dc-msg { transition: none !important; animation: none !important; }
   .dc-typing span { animation: none !important; opacity: .7; }
 }
+.dc-panel[hidden], .dc-launch[hidden] { display: none !important; }

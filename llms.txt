@@ -1,0 +1,41 @@
+# Dharmik Sheth
+
+> Technical SEO & AI Automation Specialist based in Ahmedabad, India. In-house technical SEO, link building and content for two sister engineering-outsourcing firms (mechanical design and BIM/CAD), backed by custom Python tools, n8n workflows and AI-produced short-form video ads.
+
+Dharmik Sheth has 18+ months of hands-on SEO experience. He owns technical SEO, content and link acquisition end to end: audits, keyword and competitor research, guest-post outreach, and reporting in Google Analytics 4 and Google Search Console. His suite of 10 Python SEO tools took on-page analysis from 1–2 days down to one day per site, roughly halving audit turnaround.
+
+Contact: shethdharmik3@gmail.com · LinkedIn: https://www.linkedin.com/in/dharmik-sheth
+
+## Main pages
+
+- [Portfolio home](https://dharmiksheth.vercel.app/): About, services, process, projects, AI video work, experience, skills and contact
+- [Resume (PDF)](https://dharmiksheth.vercel.app/assets/Dharmik_Sheth_Resume.pdf): Full CV
+
+## Services
+
+- Technical SEO: audits, crawlability, indexation, metadata and site structure, tracked in GA4 and Search Console
+- Link building & outreach: prospecting industry sites, editor outreach and negotiation, guest posts
+- Content that ranks: case studies, guides, checklists, blogs and landing pages on mechanical design, FEA/CFD, sheet metal and reverse engineering
+- Automation & AI video: Python SEO tools, n8n workflows, and short-form marketing videos made with Gemini, Google Flow and Google Vids
+
+## Projects
+
+- [Sheet Metal Design & Bend Calculator](https://sheet-metal-design-alpha.vercel.app/): Live sheet metal design website with an interactive [Bend Calculator](https://sheet-metal-design-alpha.vercel.app/tools/bend-calculator) for engineers and fabricators
+- SEO Automation Toolkit: Ten Python tools (meta tag scraper and optimizer, image URL extractor, alt tag checker, internal link analyzer, AI generators for titles, meta descriptions, blogs and articles); used daily, cutting audit turnaround roughly in half
+- n8n Content Workflow: Automated pipeline connecting AI content generation, review and WordPress publishing with no manual handoffs
+- AI Website Chatbot: AI chatbot for an engineering services company website, answering visitor questions from a custom knowledge base with Google Gemini and capturing leads by email
+- Content Asset Library: Case studies, guides, checklists and downloadable resources supporting organic acquisition and guest-post placement
+- AI video ads: Short-form video ads for a US client promoting products and services on social media and in paid ads (ongoing campaign for a Google review stand product); all presenters and scenes are AI-generated
+
+## Experience
+
+- SEO Executive (In-House), Tesla Outsourcing Services, Ahmedabad (Mar 2025 – present)
+- Research Assistant & Digital Marketing Intern, Medvac Infotech, Ahmedabad (Aug 2024 – Mar 2025)
+- Bachelor of Computer Applications, Saurashtra University (2021–2024), First Class
+
+## Skills
+
+- SEO: technical, on-page, off-page, keyword research, competitor analysis, audits, link building, guest posting, content strategy, local SEO
+- Programming: Python, automation scripting, web scraping, API integration, HTML/CSS/JS
+- AI & automation: prompt engineering, n8n, ChatGPT, Claude, Gemini, Google Flow, AI content and video generation
+- Tools: WordPress, Google Analytics 4, Google Search Console, Canva, Google Vids
