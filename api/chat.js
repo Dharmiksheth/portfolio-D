@@ -1,19 +1,28 @@
-// Vercel serverless function: POST /api/chat  ->  { reply }
+// Vercel serverless function: POST /api/chat  ->  streams the reply as plain text
 // Answers questions about Dharmik from the knowledge base below using Google Gemini.
-// Privacy: visitor messages are never logged or stored. Only upstream status codes are logged on failure.
+// Privacy: visitor messages are never logged or stored. Only failure reasons are logged.
 // Security: the Gemini key lives only in Vercel's environment (process.env) and is never sent to the browser.
 
-const MODEL = process.env.GEMINI_MODEL || 'gemini-3.6-flash';
+// Fastest current model by default; override with the GEMINI_MODEL env var in Vercel.
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
 const MAX_LEN = 500;
 const MAX_HISTORY = 6;
-const TIMEOUT_MS = 20000;
+const TIMEOUT_MS = 20000;        // whole request, including the one retry
+const MAX_RETRY_WAIT_MS = 1500;  // longest wait before retrying after a 429 from Gemini
+const STREAM_ERROR_MARK = '\u0000ERR'; // tells the browser a stream broke part-way
 
-// Abuse protection: each visitor (IP) gets a few messages per minute and per hour.
+// Answer directly without "thinking". Gemini 2.x uses thinkingBudget; Gemini 3 and later use
+// thinkingLevel, where "minimal" is the no-thinking setting (Google: thinkingBudget on 3.x models
+// is only accepted for backwards compatibility and may perform unexpectedly).
+const THINKING = /^gemini-2\./.test(MODEL) ? { thinkingBudget: 0 } : { thinkingLevel: 'minimal' };
+const GENERATION_CONFIG = { maxOutputTokens: 400, temperature: 0.4, thinkingConfig: THINKING };
+
+// Abuse protection: each visitor (IP) gets a limited number of messages per minute and per hour.
 // Counts live in this function instance's memory, so they are a first line of defence;
 // a Vercel Firewall rate-limit rule on /api/chat adds a limit across all instances.
 const LIMITS = [
-  { windowMs: 60 * 1000, max: 6 },        // 6 messages per minute
-  { windowMs: 60 * 60 * 1000, max: 30 },  // 30 messages per hour
+  { windowMs: 60 * 1000, max: 12 },       // 12 messages per minute
+  { windowMs: 60 * 60 * 1000, max: 60 },  // 60 messages per hour
 ];
 
 const KNOWLEDGE = `
@@ -103,9 +112,12 @@ function allowedHosts() {
   for (const v of [process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL, process.env.VERCEL_PROJECT_PRODUCTION_URL]) {
     if (v) hosts.add(v.toLowerCase());
   }
+  // Custom domains, e.g. ALLOWED_ORIGINS=dharmiksheth.com  (www. is added automatically)
   for (const h of (process.env.ALLOWED_ORIGINS || '').split(',')) {
-    const host = h.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
-    if (host) hosts.add(host);
+    const host = h.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, '').replace(/:\d+$/, '');
+    if (!host) continue;
+    hosts.add(host);
+    hosts.add(host.startsWith('www.') ? host.slice(4) : 'www.' + host);
   }
   return hosts;
 }
@@ -161,50 +173,70 @@ function cleanHistory(raw) {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function askGemini(contents, apiKey) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(MODEL)}:generateContent`;
+// Opens a streaming request to Gemini. Retries once on 429 (waiting at most 1.5s).
+// Resolves with the open Response; throws before anything is sent to the browser.
+async function openGeminiStream(contents, apiKey, signal, deadline) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(MODEL)}:streamGenerateContent?alt=sse`;
   const body = JSON.stringify({
     systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
     contents,
+    generationConfig: GENERATION_CONFIG,
   });
-  const deadline = Date.now() + TIMEOUT_MS; // 20s total, including the one retry
 
   for (let attempt = 0; attempt < 2; attempt++) {
-    const remaining = deadline - Date.now();
-    if (remaining <= 0) throw new Error('timeout');
-
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), remaining);
     let res;
     try {
       res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
         body,
-        signal: ctrl.signal,
+        signal,
       });
     } catch (err) {
       throw new Error(err.name === 'AbortError' ? 'timeout' : 'network error');
-    } finally {
-      clearTimeout(timer);
     }
 
     if (res.status === 429 && attempt === 0) {
+      res.body?.cancel().catch(() => {});
       const retryAfter = Number(res.headers.get('retry-after'));
-      const wait = Math.min(Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 1500, 4000);
+      const wait = Math.min(Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : MAX_RETRY_WAIT_MS, MAX_RETRY_WAIT_MS);
       if (deadline - Date.now() <= wait + 500) throw new Error('rate limited');
       await sleep(wait);
       continue;
     }
-    if (!res.ok) throw new Error(`upstream HTTP ${res.status}`);
-
-    const data = await res.json();
-    const parts = data?.candidates?.[0]?.content?.parts || [];
-    const text = parts.map((p) => (typeof p.text === 'string' ? p.text : '')).join('').trim();
-    if (!text) throw new Error('empty response');
-    return text;
+    if (!res.ok || !res.body) {
+      res.body?.cancel().catch(() => {});
+      throw new Error(`upstream HTTP ${res.status}`);
+    }
+    return res;
   }
   throw new Error('rate limited');
+}
+
+// Reads Gemini's server-sent events and calls onText for each piece of answer text.
+async function relayStream(res, onText) {
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let sawText = false;
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    let nl;
+    while ((nl = buffer.indexOf('\n')) >= 0) {
+      const line = buffer.slice(0, nl).trim();
+      buffer = buffer.slice(nl + 1);
+      if (!line.startsWith('data:')) continue;
+      let event;
+      try { event = JSON.parse(line.slice(5)); } catch { continue; }
+      const parts = event?.candidates?.[0]?.content?.parts || [];
+      for (const p of parts) {
+        if (typeof p.text === 'string' && p.text && !p.thought) { sawText = true; onText(p.text); }
+      }
+    }
+  }
+  return sawText;
 }
 
 export default async function handler(req, res) {
@@ -247,12 +279,27 @@ export default async function handler(req, res) {
     { role: 'user', parts: [{ text: message }] },
   ];
 
+  const deadline = Date.now() + TIMEOUT_MS;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+  let started = false;
+
   try {
-    const reply = await askGemini(contents, apiKey);
-    return res.status(200).json({ reply });
+    const upstream = await openGeminiStream(contents, apiKey, ctrl.signal, deadline);
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('X-Accel-Buffering', 'no');
+    started = true;
+    const sawText = await relayStream(upstream, (text) => res.write(text));
+    if (!sawText) throw new Error('empty response');
+    res.end();
   } catch (err) {
     // Log only the failure reason (e.g. "upstream HTTP 404"), never the visitor's message.
-    console.error(`chat: ${MODEL} failed: ${err.message}`);
-    return res.status(502).json({ error: 'Chat is unavailable.' });
+    const reason = err.name === 'AbortError' ? 'timeout' : err.message;
+    console.error(`chat: ${MODEL} failed: ${reason}`);
+    if (!started) return res.status(502).json({ error: 'Chat is unavailable.' });
+    res.end(STREAM_ERROR_MARK); // stream broke part-way: let the browser show the friendly message
+  } finally {
+    clearTimeout(timer);
   }
 }

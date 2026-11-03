@@ -24,11 +24,11 @@ function `api/chat.js`, which answers from a knowledge base of this site's conte
 using Google Gemini. In Vercel → Project → Settings → Environment Variables, set:
 
 - `GEMINI_API_KEY` — required. Never commit it.
-- `GEMINI_MODEL` — optional, defaults to `gemini-3.6-flash`.
-- `ALLOWED_ORIGINS` — optional, extra domains allowed to use the chat (e.g. a custom domain).
+- `GEMINI_MODEL` — optional, defaults to `gemini-3.5-flash-lite` (fastest). Gemini 2.x models get `thinkingBudget: 0`; 3.x and later get `thinkingLevel: "minimal"`.
+- `ALLOWED_ORIGINS` — optional, your custom domain(s), comma-separated, e.g. `dharmiksheth.com` (the `www.` version is allowed automatically).
 
 The chat endpoint only answers requests from this site and limits each visitor to
-6 messages a minute and 30 an hour.
+12 messages a minute and 60 an hour. Replies stream to the browser word by word.
 
 If the API is unavailable the widget shows a fallback message with the email address;
 the rest of the site is unaffected. Visitor messages are not logged or stored.

@@ -9,8 +9,10 @@
   var MAX_LEN = 500;
   var MAX_HISTORY = 6;
   var CLIENT_TIMEOUT_MS = 25000;
-  var FALLBACK = "Sorry, I can't answer right now. Email " + EMAIL;
-  var RATE_LIMITED = "You've sent a lot of messages in a short time. Please wait a few minutes and try again, or email " + EMAIL;
+  var FALLBACK = "I'm a bit busy right now, please try again in a moment or email " + EMAIL + ".";
+  var STREAM_ERROR_MARK = '\u0000ERR';
+  var WORD_DELAY_MS = 35; // pace of the word-by-word reveal
+  var REDUCE_MOTION = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var GREETING = "Hi! I'm Dharmik's assistant. Ask me about his work, projects or how to reach him.";
   var SUGGESTIONS = ['What does Dharmik do?', 'What projects has he built?', 'How can I contact him?'];
 
@@ -49,7 +51,7 @@
     // Styles load here (not in <head>) so they never delay the first paint.
     var css = document.createElement('link');
     css.rel = 'stylesheet';
-    css.href = 'css/chat.css?v=20261028';
+    css.href = 'css/chat.css?v=20261103';
     document.head.appendChild(css);
 
     var launch = el('button', 'dc-launch', ICON_CHAT + ICON_X.replace('<svg ', '<svg class="dc-ico-close" '));
@@ -168,6 +170,31 @@
       var ctrl = typeof AbortController === 'function' ? new AbortController() : null;
       var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, CLIENT_TIMEOUT_MS) : null;
 
+      // The server streams plain text; we reveal it word by word as it arrives.
+      var bubble = null, received = '', shown = '', streamDone = false, broke = false, ticker = null;
+      function render() {
+        if (!bubble) { typing.remove(); bubble = addMessage('bot', ''); }
+        bubble.innerHTML = format(shown);
+        log.scrollTop = log.scrollHeight;
+      }
+      function step() {
+        var rest = received.slice(shown.length);
+        if (!rest) return;
+        if (REDUCE_MOTION) { shown = received; render(); return; }
+        var m = rest.match(/^\s*\S+\s*/);
+        shown += m ? m[0] : rest;
+        render();
+      }
+      function finished() {
+        return new Promise(function (resolve) {
+          ticker = setInterval(function () {
+            step();
+            if (streamDone && shown.length >= received.length) { clearInterval(ticker); resolve(); }
+          }, WORD_DELAY_MS);
+        });
+      }
+      var revealDone = finished();
+
       fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -175,21 +202,44 @@
         signal: ctrl ? ctrl.signal : undefined
       })
         .then(function (r) {
-          if (r.status === 429) { var e = new Error('rate'); e.rate = true; throw e; }
           if (!r.ok) throw new Error('HTTP ' + r.status);
-          return r.json();
+          if (!r.body || !r.body.getReader || typeof TextDecoder !== 'function') {
+            return r.text().then(function (t) { received = t; });
+          }
+          var reader = r.body.getReader();
+          var decoder = new TextDecoder();
+          function pump() {
+            return reader.read().then(function (chunk) {
+              if (chunk.done) { received += decoder.decode(); return; }
+              received += decoder.decode(chunk.value, { stream: true });
+              return pump();
+            });
+          }
+          return pump();
         })
-        .then(function (data) {
-          var reply = data && typeof data.reply === 'string' ? data.reply.trim() : '';
-          if (!reply) throw new Error('Empty reply');
-          typing.remove();
-          addMessage('bot', reply);
+        .then(function () {
+          if (received.indexOf(STREAM_ERROR_MARK) !== -1) {
+            broke = true;
+            received = received.replace(STREAM_ERROR_MARK, '');
+          }
+          if (!received.trim()) throw new Error('Empty reply');
+          streamDone = true;
+          return revealDone;
+        })
+        .then(function () {
+          var reply = received.trim();
+          if (broke) {
+            addMessage('bot', FALLBACK, true);
+            return;
+          }
           history.push({ role: 'user', text: text }, { role: 'model', text: reply.slice(0, MAX_LEN) });
           if (history.length > MAX_HISTORY) history = history.slice(-MAX_HISTORY);
         })
-        .catch(function (err) {
+        .catch(function () {
+          if (ticker) clearInterval(ticker);
           typing.remove();
-          addMessage('bot', err && err.rate ? RATE_LIMITED : FALLBACK, true);
+          if (bubble && !shown.trim()) bubble.remove();
+          addMessage('bot', FALLBACK, true);
         })
         .then(function () {
           if (timer) clearTimeout(timer);
